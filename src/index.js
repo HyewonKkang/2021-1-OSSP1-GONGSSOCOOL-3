@@ -1,7 +1,3 @@
-/* 코드를 작성해 보세요. */
-
-/* ---------------------------------------------- */
-/* 이동 및 뷰 타입 변경 버튼 이벤트 핸들러 */
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const dayViewBtn = document.getElementById('dayViewBtn');
