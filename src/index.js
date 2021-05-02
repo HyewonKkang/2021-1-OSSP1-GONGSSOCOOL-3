@@ -3,32 +3,6 @@ import 'tui-calendar/dist/tui-calendar.css';
 import 'tui-date-picker/dist/tui-date-picker.css';
 import 'tui-time-picker/dist/tui-time-picker.css';
 
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const dayViewBtn = document.getElementById('dayViewBtn');
-const weekViewBtn = document.getElementById('weekViewBtn');
-const monthViewBtn = document.getElementById('monthViewBtn');
-
-prevBtn.addEventListener('click', () => {
-
-});
-
-nextBtn.addEventListener('click', () => {
-
-});
-
-dayViewBtn.addEventListener('click', () => {
-
-});
-
-weekViewBtn.addEventListener('click', () => {
-
-});
-
-monthViewBtn.addEventListener('click', () => {
-
-});
-
 const calendar = new Calendar('#calendar', {
   defaultView: 'week', // 'day', 'week', 'month'
   useCreationPopup: true,
@@ -115,15 +89,13 @@ calendar.setCalendarColor('General Lecture', {
   borderColor: '#dc9656'
 });
 
-// 일간 보기
-// calendar.changeView('day', true);
+const weekViewBtn = document.getElementById('weekViewBtn');
+const monthViewBtn = document.getElementById('monthViewBtn');
 
-// 주간 보기
-calendar.changeView('week', true);
+weekViewBtn.addEventListener('click', () => {
+  calendar.changeView('week', true);
+});
 
-// 월간 보기
-// calendar.changeView('month', true);
-
-// 월간 2주 보기
-// calendar.setOptions({month: {visibleWeeksCount: 2}}, true);
-// calendar.changeView('month', true);
+monthViewBtn.addEventListener('click', () => {
+  calendar.changeView('month', true);
+});
