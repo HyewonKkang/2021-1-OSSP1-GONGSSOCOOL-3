@@ -12,6 +12,9 @@
     <script src="./src/index.js"></script>
 </head>
 <body>
+    <div id="top">
+        <img src="./src/css/image/img-bi.png" srcset="./images/img-bi@2x.png 2x,./images/img-bi@3x.png 3x">
+    </div>
     <div id="lnb">
         <div class="lnb-new-schedule">
             <button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
@@ -27,7 +30,16 @@
                     </label>
                 </div>
             </div>
-            <div id="calendarList" class="lnb-calendars-d1">
+            <div>
+                개인업무
+                <button id="btn-auto-schedule-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
+                <script type="text/javascript" src="./src/js/view/popup/autoScheduleCreationPopup.js"></script>
+                <div id="calendarList" class="lnb-calendars-d1" ></div>
+            </div>
+            <div>
+                협업
+                <button id="btn-team-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
+                <div id="collaboList" class="lnb-calendars-d2"></div>
             </div>
         </div>
         <div class="lnb-footer">
@@ -64,6 +76,7 @@
                 </button>
                 <button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
                     <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+                </button>
             </span>
             <span id="renderRange" class="render-range"></span>
         </div>
