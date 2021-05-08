@@ -1,12 +1,14 @@
 const express = require("express");
 const app = express();
-const connect = require('./js/schema');
+const connect = require('./src/js/schema');
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const { response } = require("express");
-http.createServer(function(request,response){
-    var url = requset.url;
+
+
+var server = http.createServer(function(request,response){
+    var url = request.url;
     if(request.url == '/'){
         url = '/index.html';
     }
@@ -16,6 +18,6 @@ http.createServer(function(request,response){
 
 connect();
 
-app.listen(3000, () => { //3000번 포트
+server.listen(3000, () => { //3000번 포트
     console.log("the server is running")
 });
