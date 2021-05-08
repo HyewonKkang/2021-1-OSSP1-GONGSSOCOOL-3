@@ -11,6 +11,29 @@ body {
   border-color: #ddd;
 }
 
+.button {
+  width: 80px;
+  height: 40px;
+  background-color: #ff6618;
+  border: none;
+  color:#fff;
+  text-align: center;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 25px;
+  float: right;
+}
+
+.button-b1 {
+  padding-left: 8px;
+}
+
+.button-b1 label {
+  font-weight: normal;
+}
+
 .btn:hover {
   border: solid 1px #bbb;
   background-color: #fff;
@@ -132,6 +155,56 @@ body {
   font-weight: bold;
 }
 
+.lnb-auto-schedule-btn {
+  height: 100%;
+  width: 30%;
+  font-size: 6px;
+  float: right;
+  background-color: #ff6618;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.lnb-team-btn {
+  height: 100%;
+  width: 30%;
+  font-size: 6px;
+  float: right;
+  background-color: #ff6618;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.lnb-auto-schedule-btn:hover {
+  height: 100%;
+  width: 30%;
+  font-size: 6px;
+  background-color: #e55b15;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.lnb-auto-schedule-btn:active {
+  height: 100%;
+  width: 30%;
+  font-size: 6px;
+  background-color: #d95614;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
 .lnb-calendars > div {
   padding: 12px 16px;
   border-bottom: 1px solid #e5e5e5;
@@ -143,6 +216,14 @@ body {
 }
 
 .lnb-calendars-d1 label {
+  font-weight: normal;
+}
+
+.lnb-calendars-d2 {
+  padding-left: 8px;
+}
+
+.lnb-calendars-d2 label {
   font-weight: normal;
 }
 
