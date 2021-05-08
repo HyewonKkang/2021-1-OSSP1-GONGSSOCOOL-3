@@ -11,29 +11,6 @@ body {
   border-color: #ddd;
 }
 
-.button {
-  width: 80px;
-  height: 40px;
-  background-color: #ff6618;
-  border: none;
-  color:#fff;
-  text-align: center;
-  display: inline-block;
-  font-size: 12px;
-  margin: 2px;
-  cursor: pointer;
-  border-radius: 25px;
-  float: right;
-}
-
-.button-b1 {
-  padding-left: 8px;
-}
-
-.button-b1 label {
-  font-weight: normal;
-}
-
 .btn:hover {
   border: solid 1px #bbb;
   background-color: #fff;
@@ -115,6 +92,43 @@ body {
 #lnb label {
   margin-bottom: 0;
   cursor: pointer;
+}
+
+.btn-login {
+  height: 26px;
+  width: 80px;
+  font-size: 13px;
+  float: right;
+  background-color: #ff6618;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.btn-login:hover {
+  height: 26px;
+  width: 80px;
+  font-size: 13px;
+  background-color: #e55b15;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.btn-login:active {
+  height: 26px;
+  width: 80px;
+  font-size: 13px;
+  background-color: #d95614;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
 }
 
 .lnb-new-schedule {
