@@ -474,7 +474,7 @@ var mmin = Math.min;
  * @property {WeekOptions} [week={}] - {@link WeekOptions} for week view
  * @property {MonthOptions} [month={}] - {@link MonthOptions} for month view
  * @property {Array.<CalendarProps>} [calendars=[]] - {@link CalendarProps} List that can be used to add new schedule. The default value is [].
- * @property {boolean} [useCreationPopup=false] - Whether use default creation popup or not. The default value is false.
+ * @property {boolean} [useCreationPopup=true] - Whether use default creation popup or not. The default value is false.
  * @property {boolean} [useDetailPopup=false] - Whether use default detail popup or not. The default value is false.
  * @property {Timezone} [timezone] - {@link Timezone} - Set a custom time zone. You can add secondary timezone in the weekly/daily view.
  * @property {boolean} [disableDblClick=false] - Disable double click to create a schedule. The default value is false.

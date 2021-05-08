@@ -48,7 +48,7 @@ function hexToRGBA(hex) {
     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = '개인업무';
+    calendar.name = '공개SW프로젝트';
     calendar.color = '#ffffff';
     calendar.bgColor = '#9e5fff';
     calendar.dragBgColor = '#9e5fff';
@@ -58,7 +58,7 @@ function hexToRGBA(hex) {
     calendar = new CalendarInfo();
     id += 1;
     calendar.id = String(id);
-    calendar.name = '협업';
+    calendar.name = '자료구조와실습';
     calendar.color = '#ffffff';
     calendar.bgColor = '#00a9ff';
     calendar.dragBgColor = '#00a9ff';

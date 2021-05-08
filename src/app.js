@@ -229,9 +229,7 @@
             raw: {
                 location: location
             },
-            state: 'Busy',
-            duration: duration,
-            importance: importance
+            state: 'Busy'
         }]);
 
         $('#modal-new-schedule').modal('hide');
@@ -285,9 +283,7 @@
             raw: {
                 class: scheduleData.raw['class']
             },
-            state: scheduleData.state,
-            duration: scheduleData.duration,
-            importance: scheduleData.importance
+            state: scheduleData.state
         };
         if (calendar) {
             schedule.calendarId = calendar.id;
@@ -407,7 +403,7 @@
 
     function setSchedules() {
         cal.clear();
-        generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
+        //generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
         cal.createSchedules(ScheduleList);
 
         refreshScheduleVisibility();
