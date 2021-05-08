@@ -680,6 +680,28 @@
 .tui-full-calendar-section-title input {
   width: 365px;
 }
+.tui-full-calendar-section-duration {
+  width: 214px;
+  padding-right: 4px;
+}
+.tui-full-calendar-section-duration input {
+  width: 100px;
+}
+.tui-full-calendar-section-times {
+  width: 214px;
+  padding-right: 4px;
+  margin-left: 10px;
+}
+.tui-full-calendar-section-times input {
+  width: 100px;
+}
+.tui-full-calendar-section-importance {
+  width: 438px;
+  padding-right: 4px;
+}
+.tui-full-calendar-section-importance input {
+  width: 400px;
+}
 .tui-full-calendar-button.tui-full-calendar-section-private {
   height: 32px;
   padding: 8px;
@@ -722,6 +744,7 @@
   padding: 0 0 0 8px;
   cursor: pointer;
 }
+
 .tui-full-calendar-popup-section-item.tui-full-calendar-section-location {
   display: block;
 }
@@ -1053,6 +1076,24 @@ input[type='checkbox'].tui-full-calendar-checkbox-round + span {
   padding-left: 20px;
 }
 .tui-full-calendar-popup-detail .tui-full-calendar-schedule-title {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.6;
+  word-break: break-all;
+}
+.tui-full-calendar-popup-detail .tui-full-calendar-schedule-duration {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.6;
+  word-break: break-all;
+}
+.tui-full-calendar-popup-detail .tui-full-calendar-schedule-times {
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 1.6;
+  word-break: break-all;
+}
+.tui-full-calendar-popup-detail .tui-full-calendar-schedule-importance {
   font-size: 15px;
   font-weight: bold;
   line-height: 1.6;
