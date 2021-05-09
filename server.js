@@ -12,6 +12,9 @@ var server = http.createServer(function(request,response){
     if(request.url == '/'){
         url = '/index.html';
     }
+    if(request.url == '/favicon.ico'){
+        return response.writeHead(404);
+    }
     response.writeHead(200);
     response.end(fs.readFileSync(__dirname+url));
 });
