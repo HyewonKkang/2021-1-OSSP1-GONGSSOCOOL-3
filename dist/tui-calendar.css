@@ -678,35 +678,33 @@
   padding-right: 4px;
 }
 .tui-full-calendar-section-title input {
-  width: 365px;
+  width: 350px;
 }
 .tui-full-calendar-section-duration {
-  width: 214px;
+  width: calc(50% - 10px);
   padding-right: 4px;
 }
 .tui-full-calendar-section-duration input {
   width: 100px;
 }
 .tui-full-calendar-section-times {
-  width: 214px;
+  width: calc(50% - 10px);
   padding-right: 4px;
-  margin-left: 10px;
 }
 .tui-full-calendar-section-times input {
   width: 100px;
 }
 .tui-full-calendar-section-importance {
-  width: 438px;
+  width: calc(100% - 6px);
   padding-right: 4px;
 }
 .tui-full-calendar-section-importance input {
-  width: 400px;
+  width: 350px;
 }
 .tui-full-calendar-button.tui-full-calendar-section-private {
   height: 32px;
   padding: 8px;
   font-size: 0;
-  margin-left: 4px;
 }
 .tui-full-calendar-section-private.tui-full-calendar-public .tui-full-calendar-ic-private {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAKdJREFUKBVjYCATMKLri46Olvn9+3fX////HUByjIyMB1hZWcuWLl36BFktikaQpl+/fl0EKhBCVgRkv2NjY9NH1syErABkE1TTdqBCWRAG8reDxKBycOUoGmHOA2pIA5kOwiA2SDVMDq4TmREaGvofhJHFcLHhfgwLC9sKNNULl0KQODCgtq1atcobxIY7lZAmkGJkNXCNIAlSwIjSCApqIgJnK0wNALoOPwSpOcq0AAAAAElFTkSuQmCC) no-repeat;
