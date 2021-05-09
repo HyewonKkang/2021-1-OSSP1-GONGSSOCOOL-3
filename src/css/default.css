@@ -94,6 +94,43 @@ body {
   cursor: pointer;
 }
 
+.btn-login {
+  height: 26px;
+  width: 80px;
+  font-size: 13px;
+  float: right;
+  background-color: #ff6618;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.btn-login:hover {
+  height: 26px;
+  width: 80px;
+  font-size: 13px;
+  background-color: #e55b15;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.btn-login:active {
+  height: 26px;
+  width: 80px;
+  font-size: 13px;
+  background-color: #d95614;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
 .lnb-new-schedule {
   padding-bottom: 12px;
   border-bottom: 1px solid #e5e5e5;
@@ -133,6 +170,19 @@ body {
 }
 
 .lnb-auto-schedule-btn {
+  height: 100%;
+  width: 30%;
+  font-size: 6px;
+  float: right;
+  background-color: #ff6618;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.lnb-team-btn {
   height: 100%;
   width: 30%;
   font-size: 6px;
