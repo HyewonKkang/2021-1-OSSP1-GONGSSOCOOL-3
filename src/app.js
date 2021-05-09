@@ -36,6 +36,12 @@
         },
         'clickSchedule': function(e) {
             console.log('clickSchedule', e);
+            const {event, schedule} = e;
+            const {id, calendarId} = e.schedule;
+
+            const elSchedule = cal.getElement(id, calendarId);
+            const scheduleRect = elSchedule.getBoundingClientRect();
+            console.log(elSchedule, scheduleRect);
         },
         'clickDayname': function(date) {
             console.log('clickDayname', date);

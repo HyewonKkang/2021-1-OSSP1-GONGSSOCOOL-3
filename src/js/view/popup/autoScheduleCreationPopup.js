@@ -1,14 +1,13 @@
 var personalWork = document.getElementById('btn-auto-schedule-creation');
 
-function popup() {
-    var url = "autoScheduleCreation";
-    var name = "popup test";
-    var option = "width=500, height=500, location=no";
-    window.open(url, name, option);
+function autoSchedulePopup() {
+    var url = "autoScheduleCreationPopup.html";
+    var name = "auto-schedule-creation";
+    var option = "width=475, height=275, location=no";
 
-    //$('#btn1').on('click', createNewSchedule);
+    window.open(url, name, option);
 }
 
 personalWork.addEventListener('click', function() {
-    popup();
+    autoSchedulePopup();
 })
