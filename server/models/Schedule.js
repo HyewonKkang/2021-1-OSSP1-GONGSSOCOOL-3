@@ -12,21 +12,21 @@ var ScheduleSchema = new mongoose.Schema({
             return uuid.v4();
         }
     },
-    // 分类ID
+    
     calendarId: String,
-    // 是否全天
+    
     isAllDay: Boolean,
-    // 标题
+   
     title: String,
-    // 地址
+    
     location: String,
-    // 状态
+    
     state: String,
-    // 开始时间
+   
     start: Date,
-    // 结束时间
+
     end: Date,
-    // 其它信息
+
     raw: {
         memo: String,
         hasToOrCc: Boolean,
