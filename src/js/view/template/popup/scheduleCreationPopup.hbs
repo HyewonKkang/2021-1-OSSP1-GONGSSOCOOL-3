@@ -48,6 +48,23 @@
                 <span class="{{CSS_PREFIX}}content">{{{popupIsAllDay-tmpl}}}</span>
             </div>
         </div>
+        {{!-- 분배일수, 소요시간, 중요도 --}}
+        <div class="{{CSS_PREFIX}}popup-section">
+            <div class="{{CSS_PREFIX}}popup-section-item {{CSS_PREFIX}}section-duration">
+                <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-date"></span>
+                <input id="{{CSS_PREFIX}}schedule-duration" class="{{CSS_PREFIX}}content" placeholder="분배일수">
+            </div>>
+            <span class="{{CSS_PREFIX}}section-date-dash"></span>
+            <div class="{{CSS_PREFIX}}popup-section-item {{CSS_PREFIX}}section-times">
+                <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-date"></span>
+                <input id="{{CSS_PREFIX}}schedule-times" class="{{CSS_PREFIX}}content" placeholder="소요시간">
+            </div>
+             <span class="{{CSS_PREFIX}}section-date-dash"></span>
+            <div class="{{CSS_PREFIX}}popup-section-item {{CSS_PREFIX}}section-importance">
+                <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-title"></span>
+                <input id="{{CSS_PREFIX}}schedule-importance" class="{{CSS_PREFIX}}content" placeholder="중요도">
+            </div>
+        </div>
         <div class="{{CSS_PREFIX}}popup-section {{CSS_PREFIX}}dropdown {{CSS_PREFIX}}close {{CSS_PREFIX}}section-state">
             <button class="{{CSS_PREFIX}}button {{CSS_PREFIX}}dropdown-button {{CSS_PREFIX}}popup-section-item">
                 <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-state"></span>
