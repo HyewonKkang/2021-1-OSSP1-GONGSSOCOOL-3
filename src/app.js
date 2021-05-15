@@ -233,7 +233,10 @@
             dragBgColor: calendar.bgColor,
             borderColor: calendar.borderColor,
             raw: {
-                location: location
+                location: location,
+                duration: duration,
+                importance: importance,
+                times: times
             },
             state: 'Busy'
         }]);
@@ -271,8 +274,17 @@
             });
         }
     }
+    function getSchedule(scheduleData) {
+
+    }
     function saveNewSchedule(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
+        var duration = "", importance = "", times = "";
+
+        duration = $('#schedule-duration').val();
+        importance = $('#schedule-importance').val();
+        times = $('#schedule-times').val();
+
         var schedule = {
             id: String(chance.guid()),
             title: scheduleData.title,
@@ -287,7 +299,10 @@
             borderColor: calendar.borderColor,
             location: scheduleData.location,
             raw: {
-                class: scheduleData.raw['class']
+                class: scheduleData.raw['class'],
+                duration: duration,
+                importance: importance,
+                times: times
             },
             state: scheduleData.state
         };
@@ -297,10 +312,19 @@
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
-
+        
+        if(duration === "" && times === "" && importance ==="") {
         cal.createSchedules([schedule]);
+        }
 
         refreshScheduleVisibility();
+
+        console.log("done");
+            console.log(schedule.raw['duration']);
+            console.log(schedule.raw['times']);
+            console.log(schedule.raw['importance']);
+
+
     }
 
     function onChangeCalendars(e) {

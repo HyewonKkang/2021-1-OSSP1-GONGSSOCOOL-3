@@ -52,17 +52,17 @@
         <div class="{{CSS_PREFIX}}popup-section">
             <div class="{{CSS_PREFIX}}popup-section-item {{CSS_PREFIX}}section-duration">
                 <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-date"></span>
-                <input id="{{CSS_PREFIX}}schedule-duration" class="{{CSS_PREFIX}}content" placeholder="분배일수">
-            </div>>
+                <input id="schedule-duration" class="{{CSS_PREFIX}}content" placeholder="분배일수">
+            </div>
             <span class="{{CSS_PREFIX}}section-date-dash"></span>
             <div class="{{CSS_PREFIX}}popup-section-item {{CSS_PREFIX}}section-times">
                 <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-date"></span>
-                <input id="{{CSS_PREFIX}}schedule-times" class="{{CSS_PREFIX}}content" placeholder="소요시간">
+                <input id="schedule-times" class="{{CSS_PREFIX}}content" placeholder="소요시간">
             </div>
              <span class="{{CSS_PREFIX}}section-date-dash"></span>
             <div class="{{CSS_PREFIX}}popup-section-item {{CSS_PREFIX}}section-importance">
                 <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-title"></span>
-                <input id="{{CSS_PREFIX}}schedule-importance" class="{{CSS_PREFIX}}content" placeholder="중요도">
+                <input id="schedule-importance" class="{{CSS_PREFIX}}content" placeholder="중요도">
             </div>
         </div>
         <div class="{{CSS_PREFIX}}popup-section {{CSS_PREFIX}}dropdown {{CSS_PREFIX}}close {{CSS_PREFIX}}section-state">
@@ -82,8 +82,15 @@
                 </li>
             </ul>
         </div>
-        <button class="{{CSS_PREFIX}}button {{CSS_PREFIX}}popup-close"><span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-close"></span></button>
-        <div class="{{CSS_PREFIX}}section-button-save"><button class="{{CSS_PREFIX}}button {{CSS_PREFIX}}confirm {{CSS_PREFIX}}popup-save"><span>{{#if isEditMode}}{{{popupUpdate-tmpl}}}{{else}}{{{popupSave-tmpl}}}{{/if}}</span></button></div>
+        <button class="{{CSS_PREFIX}}button {{CSS_PREFIX}}popup-close">
+            <span class="{{CSS_PREFIX}}icon {{CSS_PREFIX}}ic-close"></span>
+        </button>
+        <div class="{{CSS_PREFIX}}section-button-save">
+            <button class="{{CSS_PREFIX}}button {{CSS_PREFIX}}confirm {{CSS_PREFIX}}popup-save" id="auto-popup-save">
+                <script type="text/javascript" src="../../../view/popup/autoScheduleCreationPopup.js"></script>
+                <span>{{#if isEditMode}}{{{popupUpdate-tmpl}}}{{else}}{{{popupSave-tmpl}}}{{/if}}</span>
+            </button>
+        </div>
     </div>
     <div id="{{CSS_PREFIX}}popup-arrow" class="{{CSS_PREFIX}}popup-arrow {{CSS_PREFIX}}arrow-bottom">
         <div class="{{CSS_PREFIX}}popup-arrow-border">
