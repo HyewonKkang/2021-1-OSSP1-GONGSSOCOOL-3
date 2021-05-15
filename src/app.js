@@ -262,7 +262,10 @@ var request = axios.create({
             dragBgColor: calendar.bgColor,
             borderColor: calendar.borderColor,
             raw: {
-                location: location
+                location: location,
+                duration: duration,
+                importance: importance,
+                times: times
             },
             state: 'Busy'
         }]);
@@ -303,6 +306,12 @@ var request = axios.create({
 
     function createScheduleData(scheduleData){
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
+        var duration = "", importance = "", times = "";
+
+        duration = $('#schedule-duration').val();
+        importance = $('#schedule-importance').val();
+        times = $('#schedule-times').val();
+
         var schedule = {
             id: scheduleData.id, // String(chance.guid()),
             title: scheduleData.title,
@@ -317,7 +326,10 @@ var request = axios.create({
             borderColor: calendar.borderColor,
             location: scheduleData.location,
             raw: {
-                class: scheduleData.raw['class']
+                class: scheduleData.raw['class'],
+                duration: duration,
+                importance: importance,
+                times: times
             },
             state: scheduleData.state
         };
@@ -327,15 +339,22 @@ var request = axios.create({
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
+        if(duration !== "" && importance !== "" && times !== "") {
+            // autoScheduling(schedule);
         return schedule;
-
+        }
     }
 
     function createSchedules(schedule) {
-
         cal.createSchedules([schedule]);
-
+        }
         refreshScheduleVisibility();
+
+        console.log("done");
+            console.log(schedule.raw['duration']);
+            console.log(schedule.raw['times']);
+            console.log(schedule.raw['importance']);
+
     }
 
     function onChangeCalendars(e) {
@@ -464,6 +483,7 @@ var request = axios.create({
 
         $('#btn-save-schedule').on('click', onNewSchedule);
         $('#btn-new-schedule').on('click', createNewSchedule);
+        $('#btn-auto-schedule-creation').on('click', createNewSchedule);
 
         $('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
 
