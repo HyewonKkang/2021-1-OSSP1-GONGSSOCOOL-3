@@ -250,6 +250,7 @@ ScheduleCreationPopup.prototype._onClickSaveSchedule = function(target) {
     var rangeDate;
     var form;
     var isAllDay;
+
     if (!domutil.hasClass(target, className) && !domutil.closest(target, '.' + className)) {
         return false;
     }

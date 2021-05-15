@@ -48,7 +48,10 @@ function ScheduleInfo() {
             company: '',
             email: '',
             phone: ''
-        }
+        },
+        duration: 0,
+        importance: 0,
+        times: 0
     };
 }
 
@@ -139,6 +142,9 @@ function generateRandomSchedule(calendar, renderStart, renderEnd) {
     schedule.raw.creator.company = chance.company();
     schedule.raw.creator.email = chance.email();
     schedule.raw.creator.phone = chance.phone();
+    schedule.raw.duration = chance.duration();
+    schedule.raw.importance = chance.importance();
+    schedule.raw.times = chance.times();    
 
     if (chance.bool({ likelihood: 20 })) {
         var travelTime = chance.minute();

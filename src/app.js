@@ -274,9 +274,7 @@
             });
         }
     }
-    function getSchedule(scheduleData) {
-
-    }
+    
     function saveNewSchedule(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
         var duration = "", importance = "", times = "";
@@ -312,18 +310,18 @@
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
-        
-        if(duration === "" && times === "" && importance ==="") {
-        cal.createSchedules([schedule]);
-        }
+        if(duration !== "" && importance !== "" && times !== "") {
+            // autoScheduling(schedule);
 
+        } else {
+            cal.createSchedules([schedule]);
+        }
         refreshScheduleVisibility();
 
         console.log("done");
             console.log(schedule.raw['duration']);
             console.log(schedule.raw['times']);
             console.log(schedule.raw['importance']);
-
 
     }
 
@@ -446,6 +444,7 @@
 
         $('#btn-save-schedule').on('click', onNewSchedule);
         $('#btn-new-schedule').on('click', createNewSchedule);
+        $('#btn-auto-schedule-creation').on('click', createNewSchedule);
 
         $('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
 
