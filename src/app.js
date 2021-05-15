@@ -5,11 +5,17 @@
 /* global moment, tui, chance */
 /* global findCalendar, CalendarList, ScheduleList, generateSchedule */
 
+var request = axios.create({
+    baseURL: 'http://127.0.0.1:8000'
+});
+
 (function(window, Calendar) {
     var cal, resizeThrottled;
     var useCreationPopup = true;
     var useDetailPopup = true;
     var datePicker, selectedCalendar;
+
+
 
     cal = new Calendar('#calendar', {
         defaultView: 'month',
@@ -48,7 +54,12 @@
         },
         'beforeCreateSchedule': function(e) {
             console.log('beforeCreateSchedule', e);
-            saveNewSchedule(e);
+            var schedule = createScheduleData(e);
+            request.post('/schedule',schedule).then(function(res) {
+                var data = res.data;
+                var schedule = createScheduleData(data);
+                createSchedules(schedule);
+            });
         },
         'beforeUpdateSchedule': function(e) {
             var schedule = e.schedule;
@@ -59,13 +70,31 @@
             if (changes && !changes.isAllDay && schedule.category === 'allday') {
                 changes.category = 'time';
             }
-
-            cal.updateSchedule(schedule.id, schedule.calendarId, changes);
-            refreshScheduleVisibility();
+            var form = $.extend({id: schedule.id}, changes);
+            if (form.start && form.start._date) {
+                form.start = form.start._date;
+            }
+            if (form.end && form.end._date) {
+                form.end = form.end._date;
+            }
+            request.put('/schedule', form).then(function() {
+                cal.updateSchedule(schedule.id, schedule.calendarId, changes);
+                refreshScheduleVisibility();
+            });
         },
         'beforeDeleteSchedule': function(e) {
             console.log('beforeDeleteSchedule', e);
-            cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+
+            request.delete('/schedule', {
+                data: {
+                    id: e.schedule.id,
+                    calendarId: e.schedule.calendarId
+                }
+            }).then(function(res) {
+                var data = res.data;
+                cal.deleteSchedule(data.id, data.calendarId);
+            });
+            // cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
         },
         'afterRenderSchedule': function(e) {
             var schedule = e.schedule;
@@ -274,8 +303,8 @@
             });
         }
     }
-    
-    function saveNewSchedule(scheduleData) {
+
+    function createScheduleData(scheduleData){
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
         var duration = "", importance = "", times = "";
 
@@ -284,11 +313,11 @@
         times = $('#schedule-times').val();
 
         var schedule = {
-            id: String(chance.guid()),
+            id: scheduleData.id, // String(chance.guid()),
             title: scheduleData.title,
             isAllDay: scheduleData.isAllDay,
-            start: scheduleData.start,
-            end: scheduleData.end,
+            start: scheduleData.start._date ? scheduleData.start._date : scheduleData.start,
+            end: scheduleData.end._date ? scheduleData.end._date : scheduleData.end,
             category: scheduleData.isAllDay ? 'allday' : 'time',
             dueDateClass: '',
             color: calendar.color,
@@ -312,9 +341,12 @@
         }
         if(duration !== "" && importance !== "" && times !== "") {
             // autoScheduling(schedule);
+        return schedule;
+        }
+    }
 
-        } else {
-            cal.createSchedules([schedule]);
+    function createSchedules(schedule) {
+        cal.createSchedules([schedule]);
         }
         refreshScheduleVisibility();
 
@@ -405,9 +437,9 @@
     }
 
     function currentCalendarDate(format) {
-      var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
+        var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
 
-      return currentDate.format(format);
+        return currentDate.format(format);
     }
 
     function setRenderRangeText() {
@@ -432,9 +464,16 @@
     function setSchedules() {
         cal.clear();
         //generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
-        cal.createSchedules(ScheduleList);
+        // cal.createSchedules(ScheduleList);
+        request.get('/schedule').then(function(res) {
+            var list = res.data;
+            $.each(list, function(index, item) {
+                var schedule = createScheduleData(item);
+                createSchedules(schedule, true);
+            });
+            refreshScheduleVisibility();
+        })
 
-        refreshScheduleVisibility();
     }
 
     function setEventListener() {
@@ -465,10 +504,12 @@
     setRenderRangeText();
     setSchedules();
     setEventListener();
+
 })(window, tui.Calendar);
 
 // set calendars
 (function() {
+
     var calendarList = document.getElementById('calendarList');
     var html = [];
     CalendarList.forEach(function(calendar) {
@@ -480,4 +521,5 @@
         );
     });
     calendarList.innerHTML = html.join('\n');
+
 })();
