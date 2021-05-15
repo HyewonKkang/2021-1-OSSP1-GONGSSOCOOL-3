@@ -15,8 +15,6 @@ var request = axios.create({
     var useDetailPopup = true;
     var datePicker, selectedCalendar;
 
-
-
     cal = new Calendar('#calendar', {
         defaultView: 'month',
         useCreationPopup: useCreationPopup,
@@ -54,6 +52,7 @@ var request = axios.create({
         },
         'beforeCreateSchedule': function(e) {
             console.log('beforeCreateSchedule', e);
+            //saveNewSchedule(e);
             var schedule = createScheduleData(e);
             request.post('/schedule',schedule).then(function(res) {
                 var data = res.data;
@@ -84,7 +83,7 @@ var request = axios.create({
         },
         'beforeDeleteSchedule': function(e) {
             console.log('beforeDeleteSchedule', e);
-
+            
             request.delete('/schedule', {
                 data: {
                     id: e.schedule.id,
@@ -249,7 +248,7 @@ var request = axios.create({
         }
 
         cal.createSchedules([{
-            id: String(chance.guid()),
+            id: scheduleData.id,
             calendarId: calendar.id,
             title: title,
             isAllDay: isAllDay,
@@ -303,8 +302,7 @@ var request = axios.create({
             });
         }
     }
-
-    function createScheduleData(scheduleData){
+    function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
         var duration = "", importance = "", times = "";
 
@@ -313,7 +311,7 @@ var request = axios.create({
         times = $('#schedule-times').val();
 
         var schedule = {
-            id: scheduleData.id, // String(chance.guid()),
+            id: scheduleData.id,
             title: scheduleData.title,
             isAllDay: scheduleData.isAllDay,
             start: scheduleData.start._date ? scheduleData.start._date : scheduleData.start,
@@ -340,21 +338,17 @@ var request = axios.create({
             schedule.borderColor = calendar.borderColor;
         }
         if(duration !== "" && importance !== "" && times !== "") {
-            // autoScheduling(schedule);
-        return schedule;
+            return schedule;
+        } else {
+            return schedule;
         }
     }
 
     function createSchedules(schedule) {
+
         cal.createSchedules([schedule]);
-        }
+
         refreshScheduleVisibility();
-
-        console.log("done");
-            console.log(schedule.raw['duration']);
-            console.log(schedule.raw['times']);
-            console.log(schedule.raw['importance']);
-
     }
 
     function onChangeCalendars(e) {
@@ -437,9 +431,9 @@ var request = axios.create({
     }
 
     function currentCalendarDate(format) {
-        var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
+      var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
 
-        return currentDate.format(format);
+      return currentDate.format(format);
     }
 
     function setRenderRangeText() {
@@ -473,7 +467,6 @@ var request = axios.create({
             });
             refreshScheduleVisibility();
         })
-
     }
 
     function setEventListener() {
@@ -483,7 +476,6 @@ var request = axios.create({
 
         $('#btn-save-schedule').on('click', onNewSchedule);
         $('#btn-new-schedule').on('click', createNewSchedule);
-        $('#btn-auto-schedule-creation').on('click', createNewSchedule);
 
         $('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
 
@@ -504,7 +496,7 @@ var request = axios.create({
     setRenderRangeText();
     setSchedules();
     setEventListener();
-
+    
 })(window, tui.Calendar);
 
 // set calendars
@@ -521,5 +513,4 @@ var request = axios.create({
         );
     });
     calendarList.innerHTML = html.join('\n');
-
 })();
