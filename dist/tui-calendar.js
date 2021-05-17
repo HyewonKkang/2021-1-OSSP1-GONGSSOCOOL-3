@@ -20569,6 +20569,9 @@ ScheduleCreationPopup.prototype._makeEditModeData = function(viewModel) {
     var id = schedule.id;
     title = schedule.title;
     isPrivate = raw['class'] === 'private';
+    duration = raw['duration'];
+    importance = raw['importance'];
+    times = raw['times'];
     location = schedule.location;
     startDate = schedule.start;
     endDate = schedule.end;
@@ -20593,7 +20596,10 @@ ScheduleCreationPopup.prototype._makeEditModeData = function(viewModel) {
         start: startDate,
         end: endDate,
         raw: {
-            class: isPrivate ? 'private' : 'public'
+            class: isPrivate ? 'private' : 'public',
+            duration: duration,
+            importance: importance,
+            times: times
         },
         zIndex: this.layer.zIndex + 5,
         isEditMode: this._isEditMode
@@ -20952,7 +20958,10 @@ ScheduleCreationPopup.prototype._onClickUpdateSchedule = function(form) {
     this.fire('beforeUpdateSchedule', {
         schedule: util.extend({
             raw: {
-                class: form.isPrivate ? 'private' : 'public'
+                class: form.isPrivate ? 'private' : 'public',
+                duration: duration,
+                importance: imporatance,
+                times: times
             }
         }, this._schedule),
         changes: changes,
@@ -20987,7 +20996,10 @@ ScheduleCreationPopup.prototype._onClickCreateSchedule = function(form) {
         title: form.title.value,
         location: form.location.value,
         raw: {
-            class: form.isPrivate ? 'private' : 'public'
+            class: form.isPrivate ? 'private' : 'public',
+            duration: form.duration,
+            times: form.times,
+            importance: form.importance
         },
         start: form.start,
         end: form.end,

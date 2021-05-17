@@ -20,6 +20,9 @@ var ScheduleSchema = new mongoose.Schema({
     start: Date,
     end: Date,
     raw: {
+        importance: Number,
+        duration: Number,
+        times: Number,
         memo: String,
         hasToOrCc: Boolean,
         hasRecurrenceRule: Boolean,

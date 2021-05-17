@@ -84,7 +84,7 @@ var request = axios.create({
         },
         'beforeDeleteSchedule': function(e) {
             console.log('beforeDeleteSchedule', e);
-
+            
             request.delete('/schedule', {
                 data: {
                     id: e.schedule.id,
@@ -249,7 +249,7 @@ var request = axios.create({
         }
 
         cal.createSchedules([{
-            id: String(chance.guid()),
+            id: scheduleData.id,
             calendarId: calendar.id,
             title: title,
             isAllDay: isAllDay,
@@ -262,7 +262,10 @@ var request = axios.create({
             dragBgColor: calendar.bgColor,
             borderColor: calendar.borderColor,
             raw: {
-                location: location
+                location: location,
+                duration: duration,
+                importance: importance,
+                times: times
             },
             state: 'Busy'
         }]);
@@ -300,42 +303,16 @@ var request = axios.create({
             });
         }
     }
-
-    // function saveNewSchedule(scheduleData) {
-    //     var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
-    //     var schedule = {
-    //         id: String(chance.guid()),
-    //         title: scheduleData.title,
-    //         isAllDay: scheduleData.isAllDay,
-    //         start: scheduleData.start,
-    //         end: scheduleData.end,
-    //         category: scheduleData.isAllDay ? 'allday' : 'time',
-    //         dueDateClass: '',
-    //         color: calendar.color,
-    //         bgColor: calendar.bgColor,
-    //         dragBgColor: calendar.bgColor,
-    //         borderColor: calendar.borderColor,
-    //         location: scheduleData.location,
-    //         raw: {
-    //             class: scheduleData.raw['class']
-    //         },
-    //         state: scheduleData.state
-    //     };
-    //     if (calendar) {
-    //         schedule.calendarId = calendar.id;
-    //         schedule.color = calendar.color;
-    //         schedule.bgColor = calendar.bgColor;
-    //         schedule.borderColor = calendar.borderColor;
-    //     }
-
-    //     cal.createSchedules([schedule]);
-
-    //     refreshScheduleVisibility();
-    // }
     function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
+        var duration = "", importance = "", times = "";
+
+        duration = $('#schedule-duration').val();
+        importance = $('#schedule-importance').val();
+        times = $('#schedule-times').val();
+
         var schedule = {
-            id: scheduleData.id, // String(chance.guid()),
+            id: scheduleData.id,
             title: scheduleData.title,
             isAllDay: scheduleData.isAllDay,
             start: scheduleData.start._date ? scheduleData.start._date : scheduleData.start,
@@ -348,7 +325,10 @@ var request = axios.create({
             borderColor: calendar.borderColor,
             location: scheduleData.location,
             raw: {
-                class: scheduleData.raw['class']
+                class: scheduleData.raw['class'],
+                duration: duration,
+                importance: importance,
+                times: times
             },
             state: scheduleData.state
         };
@@ -358,8 +338,11 @@ var request = axios.create({
             schedule.bgColor = calendar.bgColor;
             schedule.borderColor = calendar.borderColor;
         }
-        return schedule;
-
+        if(duration !== "" && importance !== "" && times !== "") {
+            return schedule;
+        } else {
+            return schedule;
+        }
     }
 
     function createSchedules(schedule) {
@@ -449,9 +432,9 @@ var request = axios.create({
     }
 
     function currentCalendarDate(format) {
-        var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
+      var currentDate = moment([cal.getDate().getFullYear(), cal.getDate().getMonth(), cal.getDate().getDate()]);
 
-        return currentDate.format(format);
+      return currentDate.format(format);
     }
 
     function setRenderRangeText() {
@@ -548,3 +531,4 @@ $('#btn-logout').on('click', function() {
         window.location.href = 'login.html';
     });
 });
+
