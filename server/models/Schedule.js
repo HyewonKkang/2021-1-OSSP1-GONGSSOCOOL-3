@@ -12,21 +12,13 @@ var ScheduleSchema = new mongoose.Schema({
             return uuid.v4();
         }
     },
-    
     calendarId: String,
-    
     isAllDay: Boolean,
-   
     title: String,
-    
     location: String,
-    
     state: String,
-   
     start: Date,
-
     end: Date,
-
     raw: {
         memo: String,
         hasToOrCc: Boolean,
