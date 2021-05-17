@@ -6,7 +6,8 @@
 /* global findCalendar, CalendarList, ScheduleList, generateSchedule */
 
 var request = axios.create({
-    baseURL: 'http://127.0.0.1:8000'
+    baseURL: '/api',
+    withCredentials: true
 });
 
 (function(window, Calendar) {
@@ -14,8 +15,6 @@ var request = axios.create({
     var useCreationPopup = true;
     var useDetailPopup = true;
     var datePicker, selectedCalendar;
-
-
 
     cal = new Calendar('#calendar', {
         defaultView: 'month',
@@ -42,14 +41,21 @@ var request = axios.create({
         },
         'clickSchedule': function(e) {
             console.log('clickSchedule', e);
+            const {event, schedule} = e;
+            const {id, calendarId} = e.schedule;
+
+            const elSchedule = cal.getElement(id, calendarId);
+            const scheduleRect = elSchedule.getBoundingClientRect();
+            console.log(elSchedule, scheduleRect);
         },
         'clickDayname': function(date) {
             console.log('clickDayname', date);
         },
         'beforeCreateSchedule': function(e) {
             console.log('beforeCreateSchedule', e);
+            //saveNewSchedule(e);
             var schedule = createScheduleData(e);
-            request.post('/schedule',schedule).then(function(res) {
+            request.post('/schedule', schedule).then(function(res) {
                 var data = res.data;
                 var schedule = createScheduleData(data);
                 createSchedules(schedule);
@@ -295,7 +301,38 @@ var request = axios.create({
         }
     }
 
-    function createScheduleData(scheduleData){
+    // function saveNewSchedule(scheduleData) {
+    //     var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
+    //     var schedule = {
+    //         id: String(chance.guid()),
+    //         title: scheduleData.title,
+    //         isAllDay: scheduleData.isAllDay,
+    //         start: scheduleData.start,
+    //         end: scheduleData.end,
+    //         category: scheduleData.isAllDay ? 'allday' : 'time',
+    //         dueDateClass: '',
+    //         color: calendar.color,
+    //         bgColor: calendar.bgColor,
+    //         dragBgColor: calendar.bgColor,
+    //         borderColor: calendar.borderColor,
+    //         location: scheduleData.location,
+    //         raw: {
+    //             class: scheduleData.raw['class']
+    //         },
+    //         state: scheduleData.state
+    //     };
+    //     if (calendar) {
+    //         schedule.calendarId = calendar.id;
+    //         schedule.color = calendar.color;
+    //         schedule.bgColor = calendar.bgColor;
+    //         schedule.borderColor = calendar.borderColor;
+    //     }
+
+    //     cal.createSchedules([schedule]);
+
+    //     refreshScheduleVisibility();
+    // }
+    function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
         var schedule = {
             id: scheduleData.id, // String(chance.guid()),
@@ -447,8 +484,7 @@ var request = axios.create({
                 createSchedules(schedule, true);
             });
             refreshScheduleVisibility();
-        })
-
+        });
     }
 
     function setEventListener() {
@@ -478,12 +514,10 @@ var request = axios.create({
     setRenderRangeText();
     setSchedules();
     setEventListener();
-
 })(window, tui.Calendar);
 
 // set calendars
 (function() {
-
     var calendarList = document.getElementById('calendarList');
     var html = [];
     CalendarList.forEach(function(calendar) {
@@ -495,5 +529,22 @@ var request = axios.create({
         );
     });
     calendarList.innerHTML = html.join('\n');
-
 })();
+
+let isLogin = false;
+request.get('/loged').then(function() {
+    isLogin = true;
+    $('#btn-logout').show();
+}).catch(function() {
+    $('#btn-login').show();
+});
+
+$('#btn-login').on('click', function() {
+    window.location.href = 'login.html';
+});
+
+$('#btn-logout').on('click', function() {
+    request.get('/logout').then(function() {
+        window.location.href = 'login.html';
+    });
+});
