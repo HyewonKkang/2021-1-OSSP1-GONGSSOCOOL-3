@@ -16,7 +16,7 @@
     padding: 30px, 20px;
     background-color:#FFFFFF;
     text-align:center;
-    top:50%;
+    top:40%;
     left:50%;
     transform: translate(-50%,-50%);
     border-radius: 15px;
@@ -25,6 +25,12 @@
   .loginForm h2{
     text-align: center;
     margin: 30px;
+  }
+  
+  .idForm{
+    border-bottom: 2px solid #adadad;
+    margin: 30px;
+    padding: 10px 10px;
   }
   
   .emailForm{
@@ -49,6 +55,16 @@
     border-bottom: 2px solid #adadad;
     margin: 30px;
     padding: 10px 10px;
+  }
+
+  .userid {
+    width: 100%;
+    border:none;
+    outline:none;
+    color: #636e72;
+    font-size:16px;
+    height:25px;
+    background: none;
   }
 
   .email {
