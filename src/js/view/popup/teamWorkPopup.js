@@ -1,8 +1,8 @@
-var personalWork = document.getElementById('btn-team-creation');
+var personalWork = document.getElementById('btn-team-work');
 
 function teamPopup() {
-    var url = "teamCreationPopup.html";
-    var name = "team-creation";
+    var url = "teamWorkPopup.html";
+    var name = "team-work";
     var option = "width=475, height=195, location=no";
 
     window.open(url, name, option);
