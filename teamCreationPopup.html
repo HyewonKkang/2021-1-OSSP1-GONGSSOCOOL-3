@@ -1,0 +1,39 @@
+<DOCTYPE HTML5>
+    <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="./src/css/login.css">
+        <script>
+            const add_textbox = () => {
+                const box = document.getElementById("textBox");
+                const newP = document.createElement('p');
+                newP.innerHTML = "<div id='textBox'> <input type='text' class='teamAdd' placeholder='팀원 초대 (이메일)'> <hr width='240px'></div>";
+                box.appendChild(newP);
+            }
+            const remove = (obj) => {
+                document.getElementById('box').removeChild(obj.parentNode);
+            }
+        </script>
+    </head>
+
+    <body>
+        <image width="100%" height="100%" src="./src/css/image/background.png" style="opacity: 0.5"></image>
+
+        <form action="index.html" method="post" class="loginForm">
+            <h2>Team Creation</h2>
+            <div>
+                <input type="text" class="teamName" placeholder="팀 이름 (과목이름)">
+                <hr width="230px">
+            </div>
+            <div>
+                <div id="textBox">
+                    <image type="button" id="addbtn" width="10%" height="10%" src="./src/css/image/free-icon-add-button-4601618.png" style="opacity: 1" onclick="add_textbox()"></image>
+                    <input type="text" class="teamAdd" placeholder="팀원 초대 (이메일)">
+                    <hr width="230px">
+                </div>
+            </div>
+            <button type="button" class="btn">
+                SAVE
+            </button>
+        </form>
+    </body>
+</html>
