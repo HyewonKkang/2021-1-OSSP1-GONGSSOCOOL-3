@@ -441,19 +441,113 @@ var request = axios.create({
                 // }
             }
         
+            // 블록 단위 분배
+            for(var z=0; z<auto_schedules.length; z++){
+                var auto_start = new Date(auto_schedules[z].start);
+                var auto_end = new Date(auto_schedules[z].end);
+
+                var auto_start_month = auto_start.getMonth();
+                var auto_start_date = auto_start.getDate();
+                var auto_start_hours = auto_start.getHours();
+                var auto_start_minutes = auto_start.getMinutes();
+                var auto_end_month = auto_end.getMonth();
+                var auto_end_date = auto_end.getDate();
+                var auto_end_hours = auto_end.getHours();
+                var auto_end_minutes = auto_end.getMinutes();
+
+                var auto_times = parseInt(auto_schedules[z].raw['times']);
+                var auto_duration = parseInt(auto_schedules[z].raw['duration']);
+                var divided_times = auto_times / auto_duration;
+                var time;
+
+                var start_date = new Date(min_start);
+                var end_date = new Date(max_end);
+                var len =  end_date.getDate() - start_date.getDate() + 1;
+
+                // 필요 시간 배정
+                if(Number.isInteger(divided_times)){
+                    time = divided_times*2;
+                }
+                else{
+                    if(divided_times-parseInt(divided_times) <= 0.5){
+                        time = parseInt(divided_times)*2 + 1;
+                    }
+                    else{
+                        time = (parseInt(divided_times)+1)*2;
+                    }
+                }
+                
+                var auto_timeblock = new Array();
+                var dates = new Array();
+                var times = new Array();
+                var duration_count = auto_duration;
+                
+                for(var i=0; i<len; i++){
+                    for(var j=17; j<48-time; j++){
+                        if(timetable[j][i] === 0){
+                            var flag=0;
+                            for(var k=0; k<time; k++){ // 타임블럭이 들어가지는지 확인
+                                if(timetable[j+k][i] === 0){ 
+                                    flag++;
+                                }
+                            }
+                            if(flag === time){ // 들어가짐
+                                duration_count--;
+                                dates.push(i);
+                                times.push(j - time);
+                                for(var k=0; k<time; k++){ // 타임블럭이 들어갔으므로 1로 변환
+                                    timetable[j+k][i] = 1 
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if(duration_count === 0){
+                        break;
+                    }
+                }
+                
+                for(var a=0; a<auto_duration; a++){
+                    auto_start_date += dates[a];
+                    auto_start_hours = parseInt(times[a]/2);
+                    if(times[a]%2 === 0){auto_start_minutes = 0;}
+                    else{auto_start_minutes = 30;}
+                    
+                    auto_end_date = auto_start_date;
+                    auto_end_hours = parseInt((times[a] + time)/2);
+                    if((times[a]+time)%2 == 0){auto_end_minutes = 0;}
+                    else{auto_end_minutes = 30;}
+
+                    auto_start.setDate(auto_start_date);
+                    auto_start.setHours(auto_start_hours);
+                    auto_start.setMinutes(auto_start_minutes);
+                    auto_end.setDate(auto_end_date);
+                    auto_end.setHours(auto_end_hours);
+                    auto_end.setMinutes(auto_end_minutes);
+
+                    auto_schedules[z].start = auto_start;
+                    auto_schedules[z].end = auto_end;
+
+                    auto_timeblock.push(auto_schedules[z]);
+                    console.log("날짜: " + auto_start_date);
+                    console.log("시작시간: " + auto_start_hours + ":" + auto_start_minutes);
+                    console.log("끝시간: " + auto_end_hours + ":" + auto_end_minutes);
+                    console.log(auto_schedules[z]);
+                }
+            }
+            /*
+            for(var i=0; i<auto_timeblock.length; i++){
+                var schedule = createScheduleData(auto_timeblock[i]);
+
+                request.post('/schedule', schedule).then(function(res) {
+                    var data = res.data;
+                    var schedule = createScheduleData(data);
+                    createSchedules(schedule);
+                });
+            }*/
             
         })
-        .then(function() { // 블록 단위 분배
-            var divided_times = auto_times / auto_duration;
-        //     for(var i=0; i<auto_duration; i++) {
 
-        //         request.post('/schedule', schedule).then(function(res) {
-        //             var data = res.data;
-        //             var schedule = createScheduleData(data); // 수정 필요
-        //             createSchedules(schedule);
-        //         });
-        //     }   
-        })
     }
     function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
