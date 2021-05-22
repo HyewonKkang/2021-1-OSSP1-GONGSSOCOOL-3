@@ -123,14 +123,6 @@ module.exports = {
         progress: true,
         inline: true,
         host: '0.0.0.0',
-        disableHostCheck: true,
-        proxy: {
-            // / api의 시작 부분에있는 주소를 방문하는 한 모든 프록시는 http : // localhost : 8000 백엔드로 연결됩니다. 
-            '/api': {
-                target: 'http://localhost:8000',
-                // 경로 다시 쓰기 
-                pathRewrite: {'^/api': ''}
-            }
-        }
+        disableHostCheck: true
     }
 };

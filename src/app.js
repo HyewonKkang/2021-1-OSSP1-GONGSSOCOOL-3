@@ -6,8 +6,7 @@
 /* global findCalendar, CalendarList, ScheduleList, generateSchedule */
 
 var request = axios.create({
-    baseURL: '/api',
-    withCredentials: true
+    baseURL: 'http://127.0.0.1:8000'
 });
 
 (function(window, Calendar) {
@@ -55,7 +54,7 @@ var request = axios.create({
             console.log('beforeCreateSchedule', e);
             //saveNewSchedule(e);
             var schedule = createScheduleData(e);
-            request.post('/schedule', schedule).then(function(res) {
+            request.post('/schedule',schedule).then(function(res) {
                 var data = res.data;
                 var schedule = createScheduleData(data);
                 createSchedules(schedule);
@@ -467,7 +466,7 @@ var request = axios.create({
                 createSchedules(schedule, true);
             });
             refreshScheduleVisibility();
-        });
+        })
     }
 
     function setEventListener() {
@@ -497,10 +496,12 @@ var request = axios.create({
     setRenderRangeText();
     setSchedules();
     setEventListener();
+    
 })(window, tui.Calendar);
 
 // set calendars
 (function() {
+
     var calendarList = document.getElementById('calendarList');
     var html = [];
     CalendarList.forEach(function(calendar) {
@@ -513,22 +514,3 @@ var request = axios.create({
     });
     calendarList.innerHTML = html.join('\n');
 })();
-
-let isLogin = false;
-request.get('/loged').then(function() {
-    isLogin = true;
-    $('#btn-logout').show();
-}).catch(function() {
-    $('#btn-login').show();
-});
-
-$('#btn-login').on('click', function() {
-    window.location.href = 'login.html';
-});
-
-$('#btn-logout').on('click', function() {
-    request.get('/logout').then(function() {
-        window.location.href = 'login.html';
-    });
-});
-

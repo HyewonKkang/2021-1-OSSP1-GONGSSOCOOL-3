@@ -2,18 +2,22 @@ const mongoose = require('mongoose');
 const uuid = require('node-uuid');
 
 var UserSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        default: function genUUID() {
-            return uuid.v4();
-        }
+    userId: {
+        type:String,
+        require: true,
+        unique: true,
     },
-    email: String,
+    email: {
+        type:String,
+        require: true,
+        unique: true,
+    },
     password: {
-        type: String,
-        select: false
+        type:String,
+        require: true,
     },
-    birthday: String
+    birthday: Date,
+    phone: String,
 });
 
 const User = mongoose.model('user', UserSchema);

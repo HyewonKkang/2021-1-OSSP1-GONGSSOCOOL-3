@@ -10,7 +10,6 @@ module.exports = {
         router.get('/', async (req, res) => {
             let list = await Schedule.find();
             res.json(list);
-            console.log("get");
         });
         /**
          *  Create schedule
@@ -19,16 +18,14 @@ module.exports = {
             const schedule = new Schedule(req.body);
             const data = await schedule.save();
             res.json(data);
-            console.log("create");
             // res.json(1);
         });
         /**
-         *  Update schedule
+         *  Delete schedule
          */
         router.put('/', async (req, res) => {
             await Schedule.updateOne({id: req.body.id}, req.body);
             res.send();
-            console.log("put");
         });
         /**
          *  Delete schedule
@@ -44,7 +41,6 @@ module.exports = {
                 id: id,
                 calendarId: calendarId
             });
-            console.log("delete");
         });
         app.use('/schedule', router);
     }

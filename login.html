@@ -1,69 +1,32 @@
 <DOCTYPE HTML5>
     <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="login.css">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    </head>
-
-    <body width="100%" height="100%">
-    <image src="background.png" style="opacity: 0.5"></image>
-
-    <form id="login" action="#" method="post" class="loginForm" onsubmit="return false;">
-        <h2>LOGIN</h2>
-        <div class="emailForm">
-            <input type="text" name="email" class="email" placeholder="Email">
-        </div>
-        <div class="passForm">
-            <input type="password" name="password" class="pw" placeholder="Password">
-        </div>
-        <button type="submit" class="btn">
+      <head>
+        <link rel="stylesheet" type="text/css" href="./src/css/login.css">
+      </head>
+    
+      <body width="100%" height="100%">
+          <image src="./src/css/image/background.png" style="opacity: 0.5"></image>
+          
+          <form action="index.html" method="post" class="loginForm">
+          <h2>LOGIN</h2>
+          <div class="emailForm">
+            <input type="text" class="email" placeholder="Email">
+          </div>
+          <div class="passForm">
+            <input type="password" class="pw" placeholder="Password">
+          </div>
+          <button type="button" class="btn">
             LOG IN
-        </button>
-
-        <div class="bottomText">
+          </button>
+          <script>
+              let button = () => {
+                alert('login Button !')
+            }
+          </script>
+          <div class="bottomText">
             Don't you have ID?
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="location.href='signup.html'">sign up</a>
-        </div>
-        <script>
-            var request = axios.create({
-                baseURL: '/api',
-                withCredentials: true
-            });
-
-            request.get('/loged').then(function() {
-                window.location.href = '/index.html';
-            });
-
-            $('#login').submit(function() {
-                    var $this = $(this);
-                    var form = $this.serializeArray();
-                    var obj = {};
-                    $.each(form, function(index, item) {
-                        obj[item.name] = item.value;
-                    });
-                    if (!/^[A-Za-zd0-9]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/.test(obj.email)) {
-                        window.alert('Please input you Email address');
-                        return false;
-                    }
-                    if (!/^[A-Za-zd0-9]{5,24}$/.test(obj.password)) {
-                        window.alert('Please input you password');
-                        return false;
-                    }
-                    request.post('/login', obj).then(function(res) {
-                        var data = res.data;
-                        if (data.success) {
-                            window.location.href = '/index.html';
-                        } else {
-                            window.alert(data.msg);
-                        }
-                    });
-                    return false;
-                }
-            );
-        </script>
-    </form>
-    </body>
+          </div>
+        </form>
+      </body>
     </html>
