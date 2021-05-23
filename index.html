@@ -10,14 +10,12 @@
     <link rel="stylesheet" type="text/css" href="./src/css/default.css">
     <link rel="stylesheet" type="text/css" href="./src/css/icons.css">
     <script src="./src/index.js"></script>
-    <script language="javascript">
-        function showPopup() { window.open("teamWorkPopup.html", "a", "width=400, height=300, left=100, top=50"); }
-    </script>
 </head>
 <body>
-    <div id="top">     
+    <div id="top">
             <img src="./src/css/image/img-bi.png" srcset="./src/css/image/img-bi@2x.png 2x,./src/css/image/img-bi@3x.png 3x">
-            <button id="btn-login" class="btn btn-default btn-login" type="button" onclick="document.location.href='login.html'">Login</button>
+        <button id="btn-login" class="btn btn-default btn-login" type="button" style="display: none;">Login</button>
+        <button id="btn-logout" class="btn btn-default btn-login" type="button" style="display: none;">Logout</button>
     </div>
     <div id="lnb">
         <div id="lnb-calendars" class="lnb-calendars">
@@ -38,34 +36,15 @@
             </div>
             <div>
                 협업
-                <button id="btn-team-work" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
-                <script type="text/javascript" src="./src/js/view/popup/teamWorkPopup.js"></script>
-                <div id="collaboList" class="lnb-calendars-d2">
-                    <div class="lnb-calendars-item"><label>
-                        <input type="checkbox" class="tui-full-calendar-checkbox-round" value="1" checked="">
-                        <span style="border-color: #9e5fff; background-color: #9e5fff;"></span>
-                        <span>공쏘쿨</span>
-                    </label>
-                    </div>
-                    <div class="lnb-calendars-item"><label>
-                        <input type="checkbox" class="tui-full-calendar-checkbox-round" value="2" checked="">
-                        <span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>
-                        <span>알골팀플</span>
-                    </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="padding-top:300px;">
-            &nbsp 알림창<br>
-            <div style="border:1px solid; color: rgb(156, 152, 152); background-color: white; border-radius:3%; padding:8px; margin:4px; width: 175px; height: 150px;">
-                알림 내용 받아오기
+                <button id="btn-team-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
+                <script type="text/javascript" src="./src/js/view/popup/teamCreationPopup.js"></script>
+                <div id="collaboList" class="lnb-calendars-d2"></div>
             </div>
         </div>
         <div class="lnb-footer">
             © NHN Corp.
         </div>
-    </div>
+    </div>l
     <div id="right">
         <div id="menu">
             <span class="dropdown">
