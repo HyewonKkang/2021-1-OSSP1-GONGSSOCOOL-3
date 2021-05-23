@@ -1,45 +1,56 @@
-<DOCTYPE HTML5>
-    <html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="./src/css/login.css">
-        <style>
-        #addbtn { 
-            position: absolute;
-            right: 0px; 
-        }
-        </style>
-        <script>
-            const add_textbox = () => {
-                const box = document.getElementById("textBox");
-                const newP = document.createElement('p');
-                newP.innerHTML = "<div id='textBox'> <input type='text' class='teamAdd' placeholder='팀원 초대 (이메일)'> <hr width='240px'></div>";
-                box.appendChild(newP);
-            }
-            const remove = (obj) => {
-                document.getElementById('box').removeChild(obj.parentNode);
-            }
-        </script>
-    </head>
-
-    <body>
-        <image width="100%" height="100%" src="./src/css/image/background.png" style="opacity: 0.5"></image>
-
-        <form action="index.html" method="post" class="loginForm">
-            <h2>Team Creation</h2>
-            <div>
-                <input type="text" class="teamName" placeholder="팀 이름 (과목이름)">
-                <hr width="230px">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>TOAST UI Calendar App DEMO</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
+    <link rel="stylesheet" type="text/css" href="./dist/tui-calendar.css">
+    <link rel="stylesheet" type="text/css" href="./src/css/default.css">
+    <link rel="stylesheet" type="text/css" href="./src/css/icons.css">
+</head>
+<body>
+    <div class="tui-full-calendar-popup">
+        <div class="tui-full-calendar-popup-container">
+            <div class="tui-full-calendar-popup-section tui-full-calendar-dropdown tui-full-calendar-close tui-full-calendar-section-calendar">
             </div>
-            <div>
-                <div id="textBox">
-                    <image type="button" id="addbtn" width="10%" height="10%" src="./src/css/image/free-icon-add-button-4601618.png" style="opacity: 1" onclick="add_textbox()"></image>
-                    <input type="text" class="teamAdd" placeholder="팀원 초대 (이메일)">
-                    <hr width="230px">
+            <div class="tui-full-calendar-popup-section">
+                <div class="tui-full-calendar-popup-section-item tui-full-calendar-section-title">
+                <span class="tui-full-calendar-icon tui-full-calendar-ic-title"></span>
+                    <input id="tui-full-calendar-team-namae" class="tui-full-calendar-content" placeholder="팀명">
+                </div>
+                <button id="tui-full-calendar-schedule-private" class="tui-full-calendar-button tui-full-calendar-section-private tui-full-calendar-public">
+                <span class="tui-full-calendar-icon tui-full-calendar-ic-private"></span>
+                </button>
+            </div>
+            <div class="tui-full-calendar-popup-section">
+                <div class="tui-full-calendar-popup-section-item tui-full-calendar-section-importance">
+                    <span class="tui-full-calendar-icon tui-full-calendar-ic-title"></span>
+                        <input id="tui-full-calendar-invite-members" class="tui-full-calendar-content" placeholder="팀원 초대 (코드 입력)">
                 </div>
             </div>
-            <button type="button" class="btn">
-                SAVE
-            </button>
-        </form>
-    </body>
+            <button class="tui-full-calendar-button tui-full-calendar-popup-close">
+                <span class="tui-full-calendar-icon tui-full-calendar-ic-close"></span></button>
+            <div class="tui-full-calendar-section-button-save">
+                <button class="tui-full-calendar-button tui-full-calendar-confirm tui-full-calendar-popup-save">
+                    <span>Done</span>
+                </button>
+            </div>
+        </div>
+        <div id="tui-full-calendar-popup-arrow" class="tui-full-calendar-popup-arrow tui-full-calendar-arrow-top">
+            <div class="tui-full-calendar-popup-arrow-border" style="left: 425.5px;">
+                <div class="tui-full-calendar-popup-arrow-fill"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
+    <script src="https://uicdn.toast.com/tui.time-picker/v2.0.3/tui-time-picker.min.js"></script>
+    <script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
+</body> 
 </html>
