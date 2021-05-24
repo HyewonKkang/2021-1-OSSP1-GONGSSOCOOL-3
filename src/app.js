@@ -324,11 +324,9 @@ var request = axios.create({
         var temp_schedules = new Array(); // 임시로 고정 일정 저장
         var fixed_schedules = new Array(); // 고정 일정
         var auto_schedules = new Array(); // 자동 스케줄링 일정
-    
+
         var auto_start = Date.parse(schedule.start);
         var auto_end = Date.parse(schedule.end);
-        var auto_duration = parseInt(schedule.raw['duration']);
-        var auto_times = parseInt(schedule.raw['times']);
         var min_start, max_end;
 
         console.log('autoScheduling');
@@ -431,17 +429,9 @@ var request = axios.create({
                             }
                         }
                     }
-    
                 }
-    
-                // for (var j = 0; j < timetable.length; j++) { 
-                //     for (var k = 0; k < timetable[j].length; k++) { 
-                //         console.log('timetable[' + j + ']' + '[' + k + '] = ' + timetable[j][k] ); 
-                //     }
-                // }
             }
-        
-            // 블록 단위 분배
+          
             for(var z=0; z<auto_schedules.length; z++){
                 var auto_start = new Date(auto_schedules[z].start);
                 var auto_end = new Date(auto_schedules[z].end);
@@ -460,9 +450,7 @@ var request = axios.create({
                 var divided_times = auto_times / auto_duration;
                 var time;
 
-                var start_date = new Date(min_start);
-                var end_date = new Date(max_end);
-                var len =  end_date.getDate() - start_date.getDate() + 1;
+                var len =  auto_end_date - auto_start_date + 1;
 
                 // 필요 시간 배정
                 if(Number.isInteger(divided_times)){
@@ -477,13 +465,12 @@ var request = axios.create({
                     }
                 }
                 
-                var auto_timeblock = new Array();
                 var dates = new Array();
                 var times = new Array();
                 var duration_count = auto_duration;
                 
                 for(var i=0; i<len; i++){
-                    for(var j=17; j<48-time; j++){
+                    for(var j=22; j<48-time; j++){
                         if(timetable[j][i] === 0){
                             var flag=0;
                             for(var k=0; k<time; k++){ // 타임블럭이 들어가지는지 확인
@@ -507,47 +494,63 @@ var request = axios.create({
                     }
                 }
                 
-                for(var a=0; a<auto_duration; a++){
-                    auto_start_date += dates[a];
-                    auto_start_hours = parseInt(times[a]/2);
-                    if(times[a]%2 === 0){auto_start_minutes = 0;}
-                    else{auto_start_minutes = 30;}
-                    
-                    auto_end_date = auto_start_date;
-                    auto_end_hours = parseInt((times[a] + time)/2);
-                    if((times[a]+time)%2 == 0){auto_end_minutes = 0;}
-                    else{auto_end_minutes = 30;}
+                setAutoSchedule(z);
 
-                    auto_start.setDate(auto_start_date);
-                    auto_start.setHours(auto_start_hours);
-                    auto_start.setMinutes(auto_start_minutes);
-                    auto_end.setDate(auto_end_date);
-                    auto_end.setHours(auto_end_hours);
-                    auto_end.setMinutes(auto_end_minutes);
+                async function setAutoSchedule(z) {
+                    for(var a=0; a<auto_duration; a++){
+                        auto_start_date += dates[a];
+                        auto_start_hours = parseInt(times[a]/2);
+                        if(times[a]%2 === 0){auto_start_minutes = 0;}
+                        else{auto_start_minutes = 30;}
+                        
+                        auto_end_date = auto_start_date;
+                        auto_end_hours = parseInt((times[a] + time)/2);
+                        if((times[a]+time)%2 == 0){auto_end_minutes = 0;}
+                        else{auto_end_minutes = 30;}
+    
+                        auto_start.setDate(auto_start_date);
+                        auto_start.setHours(auto_start_hours);
+                        auto_start.setMinutes(auto_start_minutes);
+                        auto_end.setDate(auto_end_date);
+                        auto_end.setHours(auto_end_hours);
+                        auto_end.setMinutes(auto_end_minutes);
+                        
+                        var push_schedule = {};
+                        push_schedule.title = auto_schedules[z].title;
+                        push_schedule.isAllDay = auto_schedules[z].isAllDay;
+                        push_schedule.location = auto_schedules[z].location;
+                        push_schedule.category = auto_schedules[z].category;
+                        push_schedule.dueDateClass = auto_schedules[z].dueDateClass;
+                        push_schedule.color = auto_schedules[z].color;
+                        push_schedule.bgColor = auto_schedules[z].bgColor;
+                        push_schedule.dragBgColor = auto_schedules[z].dragBgColor;
+                        push_schedule.borderColor = auto_schedules[z].borderColor;
+                        push_schedule.start = auto_start;
+                        push_schedule.end = auto_end;
+                        push_schedule.raw = {};
+                        push_schedule.raw.class=auto_schedules[z].raw['class'];
+                        push_schedule.raw.duration= auto_schedules[z].raw['duration'];
+                        push_schedule.raw.importance = auto_schedules[z].raw['importance'];
+                        push_schedule.raw.times = auto_schedules[z].raw['times'];
 
-                    auto_schedules[z].start = auto_start;
-                    auto_schedules[z].end = auto_end;
-
-                    auto_timeblock.push(auto_schedules[z]);
-                    console.log("날짜: " + auto_start_date);
-                    console.log("시작시간: " + auto_start_hours + ":" + auto_start_minutes);
-                    console.log("끝시간: " + auto_end_hours + ":" + auto_end_minutes);
-                    console.log(auto_schedules[z]);
+                        await fetchSchedule(push_schedule);
+                    }
+                }
+                
+                function fetchSchedule(schedule) {
+                    return new Promise(function(resolve) {
+                        var schedule_ = createScheduleData(schedule);
+                        console.log(schedule.start, schedule.end);
+                        request.post('/schedule', schedule_).then(function(res) {
+                            var data = res.data;
+                            var schedule_ = createScheduleData(data);
+                            createSchedules(schedule_);
+                        });
+                    resolve();
+                    })
                 }
             }
-            /*
-            for(var i=0; i<auto_timeblock.length; i++){
-                var schedule = createScheduleData(auto_timeblock[i]);
-
-                request.post('/schedule', schedule).then(function(res) {
-                    var data = res.data;
-                    var schedule = createScheduleData(data);
-                    createSchedules(schedule);
-                });
-            }*/
-            
         })
-
     }
     function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
