@@ -8,27 +8,35 @@ module.exports = {
          *  Get schedule list
          */
         router.get('/', async (req, res) => {
-            let list = await Schedule.find();
+            let list = await Schedule.find({
+                uid: req.session.user.id
+            });
             res.json(list);
-            console.log("get");
+            console.log('get');
         });
         /**
          *  Create schedule
          */
         router.post('/', async (req, res) => {
-            const schedule = new Schedule(req.body);
+            const schedule = new Schedule({
+                ...req.body,
+                uid: req.session.user.id
+            });
             const data = await schedule.save();
             res.json(data);
-            console.log("create");
+            console.log('create');
             // res.json(1);
         });
         /**
          *  Update schedule
          */
         router.put('/', async (req, res) => {
-            await Schedule.updateOne({id: req.body.id}, req.body);
+            await Schedule.updateOne({
+                id: req.body.id,
+                uid: req.session.user.id
+            }, req.body);
             res.send();
-            console.log("put");
+            console.log('put');
         });
         /**
          *  Delete schedule
@@ -38,13 +46,14 @@ module.exports = {
             const calendarId = req.body.calendarId;
             await Schedule.deleteOne({
                 id: id,
+                uid: req.session.user.id,
                 calendarId: calendarId
             });
             res.json({
                 id: id,
                 calendarId: calendarId
             });
-            console.log("delete");
+            console.log('delete');
         });
         app.use('/schedule', router);
     }

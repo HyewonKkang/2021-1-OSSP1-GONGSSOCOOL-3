@@ -12,6 +12,7 @@ var ScheduleSchema = new mongoose.Schema({
             return uuid.v4();
         }
     },
+    uid: String,
     calendarId: String,
     isAllDay: Boolean,
     title: String,

@@ -16,7 +16,11 @@ module.exports = {
                     password: password
                 });
                 if (user) {
-                    req.session.user = email;
+                    req.session.user = {
+                        id: user.id,
+                        email: user.email,
+                        birthday: user.birthday
+                    };
                     res.json({
                         success: true
                     });
