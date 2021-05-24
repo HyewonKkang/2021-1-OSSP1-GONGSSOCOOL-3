@@ -435,7 +435,6 @@ var request = axios.create({
             for(var z=0; z<auto_schedules.length; z++){
                 var auto_start = new Date(auto_schedules[z].start);
                 var auto_end = new Date(auto_schedules[z].end);
-
                 var auto_start_month = auto_start.getMonth();
                 var auto_start_date = auto_start.getDate();
                 var auto_start_hours = auto_start.getHours();
@@ -451,7 +450,7 @@ var request = axios.create({
                 var time;
 
                 var len =  auto_end_date - auto_start_date + 1;
-
+                var start_date = auto_start_date;
                 // 필요 시간 배정
                 if(Number.isInteger(divided_times)){
                     time = divided_times*2;
@@ -498,7 +497,7 @@ var request = axios.create({
 
                 async function setAutoSchedule(z) {
                     for(var a=0; a<auto_duration; a++){
-                        auto_start_date += dates[a];
+                        auto_start_date = start_date + dates[a];
                         auto_start_hours = parseInt(times[a]/2);
                         if(times[a]%2 === 0){auto_start_minutes = 0;}
                         else{auto_start_minutes = 30;}
