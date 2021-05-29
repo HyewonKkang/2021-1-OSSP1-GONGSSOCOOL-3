@@ -387,46 +387,47 @@ var request = axios.create({
                 }
             }    
             
-            if(auto_schedules.length != 1) { // 고정 일정 timetable에 입력
-                for(var i=0; i<fixed_schedules.length; i++) {
-                    var data_start = new Date(fixed_schedules[i].start);
-                    var data_end = new Date(fixed_schedules[i].end);
-                 
-                    var data_start_month = data_start.getMonth();
-                    var data_start_date = data_start.getDate();
-                    var data_start_hours = data_start.getHours();
-                    var data_start_minutes = data_start.getMinutes();
-                    var data_end_month = data_end.getMonth();
-                    var data_end_date = data_end.getDate();
-                    var data_end_hours = data_end.getHours();
-                    var data_end_minutes = data_end.getMinutes();
-    
-                    if (data_start_minutes < 30 && data_end_minutes < 30) {
-                        for(var j=data_start_hours * 2; j<=data_end_hours * 2; j++) {
-                            for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                                timetable[j][k] = 1;
-                            }
+            for(var i=0; i<fixed_schedules.length; i++) {
+                var data_start = new Date(fixed_schedules[i].start);
+                var data_end = new Date(fixed_schedules[i].end);
+                
+                var data_start_month = data_start.getMonth();
+                var data_start_date = data_start.getDate();
+                var data_start_hours = data_start.getHours();
+                var data_start_minutes = data_start.getMinutes();
+                var data_end_month = data_end.getMonth();
+                var data_end_date = data_end.getDate();
+                var data_end_hours = data_end.getHours();
+                var data_end_minutes = data_end.getMinutes();
+            
+                console.log(data_start, data_end);
+                console.log("min:", start_, "max:", end_)
+
+                if (data_start_minutes < 30 && data_end_minutes <= 30) {
+                    for(var j=data_start_hours * 2; j<=data_end_hours * 2 + 1; j++) {
+                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
+                            timetable[j][k] = 1;
                         }
                     }
-                    else if (data_start_minutes < 30 && data_end_minutes >= 30) {
-                        for(var j=data_start_hours * 2; j<=data_end_hours * 2 + 1; j++) {
-                            for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                                timetable[j][k] = 1;
-                            }
+                }
+                else if (data_start_minutes < 30 && data_end_minutes > 30) {
+                    for(var j=data_start_hours * 2; j<=(data_end_hours+1) * 2; j++) {
+                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
+                            timetable[j][k] = 1;
                         }
                     }
-                    else if (data_start_minutes >= 30 && data_end_minutes < 30) {
-                        for(var j=data_start_hours * 2 + 1; j<=data_end_hours * 2; j++) {
-                            for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                                timetable[j][k] = 1;
-                            }
+                }
+                else if (data_start_minutes >= 30 && data_end_minutes <= 30) {
+                    for(var j=data_start_hours * 2 + 1; j<=data_end_hours * 2 + 1; j++) {
+                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
+                            timetable[j][k] = 1;
                         }
                     }
-                    else if (data_start_minutes >= 30 && data_end_minutes >= 30) {
-                        for(var j=data_start_hours * 2 + 1; j<=data_end_hours * 2 + 1; j++) {
-                            for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                                timetable[j][k] = 1;
-                            }
+                }
+                else if (data_start_minutes >= 30 && data_end_minutes > 30) {
+                    for(var j=data_start_hours * 2 + 1; j<=(data_end_hours+1) * 2; j++) {
+                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
+                            timetable[j][k] = 1;
                         }
                     }
                 }
@@ -469,7 +470,7 @@ var request = axios.create({
                 var duration_count = auto_duration;
                 
                 for(var i=0; i<len; i++){
-                    for(var j=22; j<48-time; j++){
+                    for(var j=18; j<48-time; j++){
                         if(timetable[j][i] === 0){
                             var flag=0;
                             for(var k=0; k<time; k++){ // 타임블럭이 들어가지는지 확인
@@ -480,9 +481,9 @@ var request = axios.create({
                             if(flag === time){ // 들어가짐
                                 duration_count--;
                                 dates.push(i);
-                                times.push(j - time);
+                                times.push(j);
                                 for(var k=0; k<time; k++){ // 타임블럭이 들어갔으므로 1로 변환
-                                    timetable[j+k][i] = 1 
+                                    timetable[j+k][i] = 1;
                                 }
                                 break;
                             }
@@ -528,10 +529,10 @@ var request = axios.create({
                         push_schedule.end = auto_end;
                         push_schedule.raw = {};
                         push_schedule.raw.class=auto_schedules[z].raw['class'];
-                        push_schedule.raw.duration= auto_schedules[z].raw['duration'];
-                        push_schedule.raw.importance = auto_schedules[z].raw['importance'];
-                        push_schedule.raw.times = auto_schedules[z].raw['times'];
-
+                        //push_schedule.raw.duration="";
+                       //push_schedule.raw.importance = "";
+                        //push_schedule.raw.times = "";
+                        console.log(push_schedule);
                         await fetchSchedule(push_schedule);
                     }
                 }
@@ -539,7 +540,10 @@ var request = axios.create({
                 function fetchSchedule(schedule) {
                     return new Promise(function(resolve) {
                         var schedule_ = createScheduleData(schedule);
-                        console.log(schedule.start, schedule.end);
+                        console.log(schedule_);
+                        schedule_.raw.duration="";
+                        schedule_.raw.importance="";
+                        schedule_.raw.times="";
                         request.post('/schedule', schedule_).then(function(res) {
                             var data = res.data;
                             var schedule_ = createScheduleData(data);
