@@ -358,6 +358,9 @@ var request = axios.create({
             })
             
             min_start = auto_schedules[0].start; // 최소 시작 Date
+            min_start.setHours(9);
+            min_start.setMinutes(0);
+            min_start.setSeconds(0);
 
             auto_schedules.sort(function (a, b) { // endDate + importance 순 정렬
                 if (Date.parse(a.end) > Date.parse(b.end)) return 1;
@@ -368,7 +371,8 @@ var request = axios.create({
             })
 
             max_end = auto_schedules[auto_schedules.length-1].end; // 최대 마감 Date
-            
+            max_end.setHours(23);
+            max_end.setMinutes(59);
         })
         .then(function() { // 최소 시작 ~ 최대 마감 테이블 생성
             var start_ = new Date(min_start);
@@ -385,11 +389,13 @@ var request = axios.create({
                 else { // 최소 시간 ~ 최대 마감 부분과 겹칠 때
                     fixed_schedules.push(temp_schedules[i]);
                 }
-            }    
-            
+            } 
+
             for(var i=0; i<fixed_schedules.length; i++) {
+                console.log("fixed : ", fixed_schedules[i].title, fixed_schedules[i].start, fixed_schedules[i].end);
                 var data_start = new Date(fixed_schedules[i].start);
                 var data_end = new Date(fixed_schedules[i].end);
+                if (data_start.getDate() != data_end.getDate()) continue; // all day 일정
                 
                 var data_start_month = data_start.getMonth();
                 var data_start_date = data_start.getDate();
@@ -399,40 +405,19 @@ var request = axios.create({
                 var data_end_date = data_end.getDate();
                 var data_end_hours = data_end.getHours();
                 var data_end_minutes = data_end.getMinutes();
-            
-                console.log(data_start, data_end);
-                console.log("min:", start_, "max:", end_)
 
-                if (data_start_minutes < 30 && data_end_minutes <= 30) {
-                    for(var j=data_start_hours * 2; j<=data_end_hours * 2 + 1; j++) {
-                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                            timetable[j][k] = 1;
-                        }
-                    }
-                }
-                else if (data_start_minutes < 30 && data_end_minutes > 30) {
-                    for(var j=data_start_hours * 2; j<=(data_end_hours+1) * 2; j++) {
-                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                            timetable[j][k] = 1;
-                        }
-                    }
-                }
-                else if (data_start_minutes >= 30 && data_end_minutes <= 30) {
-                    for(var j=data_start_hours * 2 + 1; j<=data_end_hours * 2 + 1; j++) {
-                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                            timetable[j][k] = 1;
-                        }
-                    }
-                }
-                else if (data_start_minutes >= 30 && data_end_minutes > 30) {
-                    for(var j=data_start_hours * 2 + 1; j<=(data_end_hours+1) * 2; j++) {
-                        for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
-                            timetable[j][k] = 1;
-                        }
+                var j_start, j_end;
+                j_start = (data_start_minutes < 30) ? data_start_hours * 2 : data_start_hours * 2 + 1;
+                if (data_end_minutes === 0) j_end = data_end_hours * 2 - 1;
+                else if (data_end_minutes <= 30) j_end = data_end_hours * 2;
+                else if (data_end_minutes > 30) j_end = data_end_hours * 2 + 1;
+
+                for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
+                    for(var j=j_start; j<=j_end; j++) {
+                        timetable[j][k] = 1;
                     }
                 }
             }
-          
             for(var z=0; z<auto_schedules.length; z++){
                 var auto_start = new Date(auto_schedules[z].start);
                 var auto_end = new Date(auto_schedules[z].end);
@@ -458,10 +443,10 @@ var request = axios.create({
                 }
                 else{
                     if(divided_times-parseInt(divided_times) <= 0.5){
-                        time = parseInt(divided_times)*2 + 1;
+                        time = parseInt(divided_times) * 2 + 1;
                     }
                     else{
-                        time = (parseInt(divided_times)+1)*2;
+                        time = (parseInt(divided_times) + 1) * 2;
                     }
                 }
                 
@@ -530,17 +515,16 @@ var request = axios.create({
                         push_schedule.raw = {};
                         push_schedule.raw.class=auto_schedules[z].raw['class'];
                         //push_schedule.raw.duration="";
-                       //push_schedule.raw.importance = "";
+                        //push_schedule.raw.importance = "";
                         //push_schedule.raw.times = "";
-                        console.log(push_schedule);
                         await fetchSchedule(push_schedule);
                     }
                 }
                 
+                
                 function fetchSchedule(schedule) {
                     return new Promise(function(resolve) {
                         var schedule_ = createScheduleData(schedule);
-                        console.log(schedule_);
                         schedule_.raw.duration="";
                         schedule_.raw.importance="";
                         schedule_.raw.times="";
