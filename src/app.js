@@ -330,6 +330,18 @@ var request = axios.create({
         var min_start, max_end;
 
         console.log('autoScheduling');
+
+        if (schedule.raw["duration"] > schedule.end.getDate() - schedule.start.getDate() + 1) { // Exception 1 - start ~ end date가 분배일수보다 작을 때
+            alert("일정을 추가할 수 없습니다 (Duration out of range)");
+            return;
+        }
+
+        var possible_hours = (auto_end - auto_start) / 1000 / 60 / 60; // Exception 2 - start ~ end 사이에 (분배일수*소요시간)이 들어갈 수 없을 때
+        if (possible_hours < schedule.raw["duration"] * schedule.raw["times"]) {
+            alert("일정을 추가할 수 없습니다 (Time out of range)");
+            return;
+        }
+
         function getData() {
             return new Promise(function(resolve) {
                 request.get('/schedule').then(function(res) {
@@ -392,7 +404,6 @@ var request = axios.create({
             } 
 
             for(var i=0; i<fixed_schedules.length; i++) {
-                console.log("fixed : ", fixed_schedules[i].title, fixed_schedules[i].start, fixed_schedules[i].end);
                 var data_start = new Date(fixed_schedules[i].start);
                 var data_end = new Date(fixed_schedules[i].end);
                 if (data_start.getDate() != data_end.getDate()) continue; // all day 일정
@@ -478,7 +489,7 @@ var request = axios.create({
                         break;
                     }
                 }
-                
+
                 setAutoSchedule(z);
 
                 async function setAutoSchedule(z) {
@@ -499,6 +510,16 @@ var request = axios.create({
                         auto_end.setDate(auto_end_date);
                         auto_end.setHours(auto_end_hours);
                         auto_end.setMinutes(auto_end_minutes);
+
+                        if (isNaN(auto_start_date) || isNaN(auto_end_date)) { // Exception 3 - 분배된 일정이 더이상 추가가 불가능한 경우
+                            if(confirm("일정을 추가할 수 없습니다.\n추가 가능한 일정만 추가하시겠습니까?") == true){
+                                alert("등록되었습니다");
+                            }
+                            else{
+                                return;
+                            }
+                            return;
+                        }
                         
                         var push_schedule = {};
                         push_schedule.title = auto_schedules[z].title;
@@ -514,14 +535,11 @@ var request = axios.create({
                         push_schedule.end = auto_end;
                         push_schedule.raw = {};
                         push_schedule.raw.class=auto_schedules[z].raw['class'];
-                        //push_schedule.raw.duration="";
-                        //push_schedule.raw.importance = "";
-                        //push_schedule.raw.times = "";
+
                         await fetchSchedule(push_schedule);
                     }
                 }
-                
-                
+                          
                 function fetchSchedule(schedule) {
                     return new Promise(function(resolve) {
                         var schedule_ = createScheduleData(schedule);
