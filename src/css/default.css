@@ -219,6 +219,43 @@ body {
   font-weight: bold;
 }
 
+.lnb-team-schedule-btn {
+  height: 30px;
+  width: 23%;
+  font-size: 11px;
+  float: right;
+  background-color: #ff6618;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.lnb-team-schedule-btn:hover {
+  height: 30px;
+  width: 23%;
+  font-size: 11px;
+  background-color: #e55b15;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
+.lnb-team-schedule-btn:active {
+  height: 30px;
+  width: 23%;
+  font-size: 11px;
+  background-color: #d95614;
+  color: #ffffff;
+  border: 0;
+  border-radius: 25px;
+  padding: 1.5px 3px;
+  font-weight: bold;
+}
+
 .lnb-calendars > div {
   padding: 12px 16px;
   border-bottom: 1px solid #e5e5e5;

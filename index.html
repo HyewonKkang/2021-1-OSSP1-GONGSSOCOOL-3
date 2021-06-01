@@ -31,20 +31,19 @@
             <div>
                 개인업무
                 <button id="btn-auto-schedule-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
-                <script type="text/javascript" src="./src/js/view/popup/autoScheduleCreationPopup.js"></script>
                 <div id="calendarList" class="lnb-calendars-d1"></div>
             </div>
             <div>
-                협업
-                <button id="btn-team-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
-                <script type="text/javascript" src="./src/js/view/popup/teamCreationPopup.js"></script>
+            협업
+                <button id="btn-team-work" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
+                <script type="text/javascript" src="./src/js/view/popup/teamWorkPopup.js"></script>
                 <div id="collaboList" class="lnb-calendars-d2"></div>
             </div>
         </div>
         <div class="lnb-footer">
             © NHN Corp.
         </div>
-    </div>l
+    </div>
     <div id="right">
         <div id="menu">
             <span class="dropdown">
@@ -55,7 +54,6 @@
                     <i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu-calendarType">
-
                     <li role="presentation">
                         <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weekly">
                             <i class="calendar-icon ic_view_week"></i>Weekly
@@ -80,6 +78,13 @@
             <span id="renderRange" class="render-range"></span>
         </div>
         <div id="calendar"></div>
+        <script>
+            function setTeamSchedule(teamSchedule) { 
+                var teamSchedule_ = document.createElement('teamSchedule');
+                teamSchedule_ = teamSchedule;
+                console.log(teamSchedule_);
+            }
+        </script>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

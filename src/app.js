@@ -720,6 +720,12 @@ var request = axios.create({
         });
     }
 
+    var teamWork = document.getElementById('teamSchedule');
+
+    function searchTeamSchedule() { // 전체 팀원의 스케줄 가운데 빈 부분 추출
+        
+    }
+
     function setEventListener() {
         $('#menu-navi').on('click', onClickNavi);
         $('.dropdown-menu a[role="menuitem"]').on('click', onClickMenu);
@@ -729,6 +735,7 @@ var request = axios.create({
         $('#btn-new-schedule').on('click', createNewSchedule);
 
         $('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
+        $('#btn-auto-schedule-creation').on('click', createNewSchedule);
 
         window.addEventListener('resize', resizeThrottled);
     }
