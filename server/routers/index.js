@@ -23,7 +23,7 @@ module.exports = {
                 }
             }
         });
-        
+
         schedule.init(app);
         calendar.init(app);
         user.init(app);

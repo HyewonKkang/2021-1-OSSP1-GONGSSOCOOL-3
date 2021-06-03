@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>TOAST UI Calendar App DEMO</title>
+    <title>TOAST UI Calendar App with Auto-Scheduling</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
     <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
@@ -10,34 +10,10 @@
     <link rel="stylesheet" type="text/css" href="./src/css/default.css">
     <link rel="stylesheet" type="text/css" href="./src/css/icons.css">
     <script src="./src/index.js"></script>
-    <script language="javascript">
-        function showPopup() { window.open("teamWorkPopup.html", "a", "width=400, height=300, left=100, top=50"); }
-    </script>
-    <style>
-        /* #btn-auto-schedule-creation1{ 
-            width: 35px;
-            position: absolute;
-            margin-top: -80px;
-            margin-right: 33px;
-        } */
-        #btn-auto-schedule-creation2{
-            width: 35px;
-            margin-top: -95px;
-            margin-right: 5px;
-        }
-        #subjectAdd{
-            background-color: rgb(250,250,250);
-            border-top: rgb(148, 148, 148);
-            border-left: rgb(148, 148, 148);
-            border-right: rgb(148, 148, 148);
-            margin-left: 20px;
-            width: 120px;
-        }
-    </style>  
 </head>
 <body>
     <div id="top">
-            <img src="./src/css/image/img-bi.png" srcset="./src/css/image/img-bi@2x.png 2x,./src/css/image/img-bi@3x.png 3x">
+            <img src="./src/css/image/img-bi.png" srcset="./src/css/image/img-bi@2x.png 2x,./src/css/image/img-bi@3x.png 3x" onClick="window.location.reload()">
         <button id="btn-login" class="btn btn-default btn-login" type="button" style="display: none;">Login</button>
         <button id="btn-logout" class="btn btn-default btn-login" type="button" style="display: none;">Logout</button>
     </div>
@@ -53,48 +29,22 @@
                 </div>
             </div>
             <div id="textBox">
-                개인업무
-                <!-- <form method="post" action="#">
-                    <input id="btn-auto-schedule-creation" style="margin-bottom: 0px;" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button" value="Add" onclick="addInput();" />
-                    <input id="btn-auto-schedule-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button" value="삭제" onclick="deleteInput();"/> 
-                    <input id="btn-auto-schedule-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="submit" value="Save"/>
-                </form> -->
-                <div id="calendarList" class="lnb-calendars-d1"></div>
-                <form>
-                <input id="subjectAdd" type="text" name="subject" placeholder='과목 추가'></input>
+                <span style="float: left;">개인업무</span>
                 <input id="btn-auto-schedule-creation2" class="btn btn-default btn-block lnb-auto-schedule-btn" value="Save"></input>
-                </form>
+                <div id="calendarList" class="lnb-calendars-d1" style="float: left;"></div>
+                <input id="subjectAdd" class="add-subject-input" type="text" name="subject" placeholder='과목 추가'></input>
             </div>
             <div>
-                협업
+            협업
                 <button id="btn-team-work" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
                 <script type="text/javascript" src="./src/js/view/popup/teamWorkPopup.js"></script>
-                <div id="collaboList" class="lnb-calendars-d2">
-                    <div class="lnb-calendars-item"><label>
-                        <input type="checkbox" class="tui-full-calendar-checkbox-round" value="1" checked="">
-                        <span style="border-color: #9e5fff; background-color: #9e5fff;"></span>
-                        <span>공쏘쿨</span>
-                    </label>
-                    </div>
-                    <div class="lnb-calendars-item"><label>
-                        <input type="checkbox" class="tui-full-calendar-checkbox-round" value="2" checked="">
-                        <span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>
-                        <span>알골팀플</span>
-                    </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="padding-top:250px;">
-            &nbsp 알림창<br>
-            <div style="border:1px solid; color: rgb(156, 152, 152); background-color: white; border-radius:3%; padding:8px; margin:4px; width: 175px; height: 150px;">
-                알림 내용 받아오기
+                <div id="collaboList" class="lnb-calendars-d2"></div>
             </div>
         </div>
         <div class="lnb-footer">
             © NHN Corp.
         </div>
-    </div>l
+    </div>
     <div id="right">
         <div id="menu">
             <span class="dropdown">
@@ -105,7 +55,6 @@
                     <i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu-calendarType">
-
                     <li role="presentation">
                         <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weekly">
                             <i class="calendar-icon ic_view_week"></i>Weekly
@@ -130,6 +79,13 @@
             <span id="renderRange" class="render-range"></span>
         </div>
         <div id="calendar"></div>
+        <script>
+            function setTeamSchedule(teamSchedule) { 
+                var teamSchedule_ = document.createElement('teamSchedule');
+                teamSchedule_ = teamSchedule;
+                console.log(teamSchedule_);
+            }
+        </script>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -144,7 +100,7 @@
     <script src="./dist/tui-calendar.js"></script>
     <!-- <script src="./src/js/data/calendars.js"></script> -->
     <script src="./src/js/data/schedules.js"></script>
-    <!-- <script src="./js/theme/dooray.js"></script> -->ss
+    <!-- <script src="./js/theme/dooray.js"></script> -->
     <script src="./src/app.js"></script>
 </body>
 </html>

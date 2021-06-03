@@ -13,9 +13,9 @@ var UserSchema = new mongoose.Schema({
         type: String,
         select: false
     },
-    birthday: String,
-    Notification: String
+    birthday: String
 });
 
 const User = mongoose.model('user', UserSchema);
+
 module.exports = User;

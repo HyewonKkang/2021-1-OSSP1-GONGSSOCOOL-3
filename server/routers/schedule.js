@@ -12,7 +12,7 @@ module.exports = {
                 uid: req.session.user.id
             });
             res.json(list);
-            console.log("get");
+            console.log('get');
         });
         /**
          *  Create schedule
@@ -24,7 +24,7 @@ module.exports = {
             });
             const data = await schedule.save();
             res.json(data);
-            console.log("create");
+            console.log('create');
             // res.json(1);
         });
         /**
@@ -36,7 +36,7 @@ module.exports = {
                 uid: req.session.user.id
             }, req.body);
             res.send();
-            console.log("put");
+            console.log('put');
         });
         /**
          *  Delete schedule
@@ -53,7 +53,7 @@ module.exports = {
                 id: id,
                 calendarId: calendarId
             });
-            console.log("delete");
+            console.log('delete');
         });
         app.use('/schedule', router);
     }
