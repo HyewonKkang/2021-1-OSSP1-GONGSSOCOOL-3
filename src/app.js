@@ -837,6 +837,55 @@ var request = axios.create({
         return target.dataset ? target.dataset.action : target.getAttribute('data-action');
     }
 
+    function randomColor() {
+        var decimal = getRanNum();
+        var hexNum = hex(decimal);
+        return "#" + hexNum;
+    }
+
+    //랜덤 10진수 생성
+    function getRanNum() {
+        var number = Math.floor(Math.random() * 16777216); //0 ~ ffffff
+        return number;
+    }
+
+    //10진수를 16진수로 변환
+    function hex(number) {
+        var abcHex = [ "a", "b", "c", "d", "e", "f" ];
+        var result = "";
+        while (number > 0) {
+            var temp = number % 16;
+            if (temp >= 10) {
+                result += abcHex[temp - 10];
+            } else {
+                result += temp;
+            }
+            number = Math.floor(number / 16);
+        }
+        result = lpad(result); //16진수 자리수 6자리로 맞추기
+        result = reverse(result); //거꾸로 저장된 16진수값 뒤집기
+        return result;
+    }
+
+    //거꾸로 입력된 16진수 뒤집기
+    function reverse(number) {
+        var result = "";
+        for (var i = number.length - 1; i >= 0; i--) {
+            result += number.charAt(i);
+        }
+        return result;
+    }
+
+     //16진수값을 6자리로 맞춰주기
+    function lpad(number) {
+        var result = number;
+        while (result.length < 6) {
+            result += "0";
+        }
+        return result;
+    }
+
+
     resizeThrottled = tui.util.throttle(function() {
         cal.render();
     }, 50);
@@ -876,14 +925,15 @@ var request = axios.create({
 
     $('#btn-auto-schedule-creation2').on('click', function() {
         var name=$('#subjectAdd').val();
+        var randColor = randomColor();
         id += 1;
         calendar.id = String(id);
         calendar.name = name;
         calendar.checked = true;
         calendar.color = '#ffffff';
-        calendar.bgColor = '#00a9ff';
-        calendar.dragBgColor = '#00a9ff';
-        calendar.borderColor = '#00a9ff';
+        calendar.bgColor = randColor;
+        calendar.dragBgColor = randColor;
+        calendar.borderColor = randColor;
         addCalendar(calendar);
         //createCalendarData(calendar);
     });
