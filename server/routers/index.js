@@ -1,5 +1,6 @@
 const schedule = require('./schedule');
 const user = require('./user');
+const calendar = require('./calendar');
 
 module.exports = {
     init(app) {
@@ -22,8 +23,9 @@ module.exports = {
                 }
             }
         });
-
+        
         schedule.init(app);
+        calendar.init(app);
         user.init(app);
     }
 };
