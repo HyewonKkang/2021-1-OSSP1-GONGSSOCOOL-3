@@ -556,6 +556,19 @@ var request = axios.create({
                 }
             }
         })
+        .then(function(){
+            console.log("notice1");
+            var notice_ = {};
+            notice_.context = "입력한 일정이 자동분배되어 배치되었습니다.";
+            request.post('/notice', notice_).then(function(res) {
+                console.log("notice2");
+                var data = res.data;
+                if (data.success) {
+                    window.alert('Register success');
+                }
+            });
+        })
+        
     }
     function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
