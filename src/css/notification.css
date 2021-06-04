@@ -1,0 +1,53 @@
+
+ul {
+    list-style:none;
+    padding-left:0px;
+    padding-right:0px;
+ }
+ 
+ .remBtn {
+    border-radius: 25px;
+    border-color: rgb(247, 167, 47);
+    padding: auto;
+  }
+  
+  .remBtn:hover {
+    border: solid 1px rgb(247, 167, 47);
+    background-color: rgb(247, 167, 47);
+  }
+  
+  .remBtn:active {
+    background-color: rgb(247, 167, 47);
+    border: solid 1px rgb(247, 167, 47);
+    outline: none;
+  }
+  
+  .remBtn:disabled {
+    background-color:rgb(247, 167, 47);
+    border: solid 1px rgb(247, 167, 47);
+    color: rgb(247, 167, 47);
+  }
+  
+  .remBtn:focus:active, .remBtn:focus, .remBtn:active {
+    outline: none;
+  }
+  
+  .scrollbar {
+    width: 250px;
+    height: 140px;
+    overflow: auto;
+  }
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: silver;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
+  .scrollbar::-webkit-scrollbar-track {
+    background-color: ghostwhite;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
