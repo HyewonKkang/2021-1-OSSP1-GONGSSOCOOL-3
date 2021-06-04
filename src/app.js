@@ -559,7 +559,7 @@ var request = axios.create({
         .then(function(){
             console.log("notice1");
             var notice_ = {};
-            notice_.context = "입력한 일정이 자동분배되어 배치되었습니다.";
+            notice_.context = schedule.title +" 일정이 자동분배되어 배치되었습니다.";
             request.post('/notice', notice_).then(function(res) {
                 console.log("notice2");
                 var data = res.data;
@@ -719,6 +719,35 @@ var request = axios.create({
         renderRange.innerHTML = html.join('');
     }
 
+    function onClickRemoveNotice(){
+        const ul = document.getElementById('notice_list');
+        const items = ul.getElementsByTagName('li');
+
+        if(items.length > 0) {
+            items[0].remove();
+        }
+        var list;
+        
+        deleteNotice();
+        function deleteNotice() {
+            return new Promise(function(resolve) {
+                request.get('/notice').then(function(res){
+                    list = res.data;
+                    resolve();
+                });
+            })
+        }
+        deleteNotice().then(function(){
+            request.delete('/notice', {
+                data: {
+                    id: list[0].id,
+                }
+            }).then(function(res) {
+                var data = res.data;
+            });
+        })
+    }
+
     function setSchedules() {
         cal.clear();
         //generateSchedule(cal.getViewName(), cal.getDateRangeStart(), cal.getDateRangeEnd());
@@ -749,6 +778,7 @@ var request = axios.create({
 
         $('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
         $('#btn-auto-schedule-creation').on('click', createNewSchedule);
+        $('#btn-remove-notice').on('click',onClickRemoveNotice);
 
         window.addEventListener('resize', resizeThrottled);
     }
@@ -782,6 +812,24 @@ var request = axios.create({
         );
     });
     calendarList.innerHTML = html.join('\n');
+})();
+
+// set notice
+(function setNotice(){
+    var list;
+    request.get('/notice').then(function(res){
+        list = res.data;
+        var noticeList = document.getElementById('notice_list');
+        var html = [];
+        html.push('<ul>');
+        list.forEach(function(notice){
+            html.push(
+                '<li>'+ notice.context +'</li>' 
+            );
+        });
+        html.push('</ul>');
+        noticeList.innerHTML = html.join('\n');
+    });
 })();
 
 let isLogin = false;

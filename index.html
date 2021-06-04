@@ -43,20 +43,9 @@
             </div>
             <div><br><br><br><br><br><br><br><br><br><br><br><br></div>
             <div>
-                알림창<input class='remBtn remBtn-default remBtn-block lnb-auto-schedule-btn' type='button' value='Remove' onclick='removeItem()' />
+                알림창<input id = "btn-remove-notice" class='remBtn remBtn-default remBtn-block lnb-auto-schedule-btn' type='button' value='Remove' />
                 <p>
-                <div class = "scrollbar" style="overflow:auto;  color: rgb(156, 152, 152); background-color: #fafafa; border-radius:3%; padding:0px; margin:0px; width: 155px; height: 120px;">
-                    <ul id='notification'>
-                        <li>일정이 추가되었습니다.</li>
-                        <li>팀이 생성되었습니다.</li>
-                        <li>팀원이 추가되었습니다.</li>
-                        <li>일정이 추가되었습니다.</li>
-                        <li>일정이 추가되었습니다.</li>
-                        <li>일정이 추가되었습니다.</li>
-                        <li>일정이 추가되었습니다.</li>
-                        <li>일정이 추가되었습니다.</li>
-                        <li>일정이 추가되었습니다.</li>
-                    </ul>                
+                <div id = "notice_list" class = "scrollbar" style="overflow:auto;  color: rgb(156, 152, 152); background-color: #fafafa; border-radius:3%; padding:0px; margin:0px; width: 155px; height: 120px;">      
                 </div>
             </div>
         </div>
@@ -121,7 +110,6 @@
     <script src="./src/js/data/schedules.js"></script>
     <!-- <script src="./js/theme/dooray.js"></script> -->
     <script src="./src/app.js"></script>
-    <script src="./notification.js"></script>
 
 </body>
 </html>
