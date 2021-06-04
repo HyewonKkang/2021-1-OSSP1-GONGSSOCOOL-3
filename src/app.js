@@ -31,13 +31,11 @@ var request = axios.create({
     }
 
     function addCalendar(calendar) {
-        CalendarList.push(calendar);
         request.post('/calendar', calendar).then(function(res) {
             var data = res.data;
-            createCalendarData(data);
             console.log(data.name);
-            //createCalendar(data);
         });
+        CalendarList.push(calendar);
     }
 
     function findCalendar(id) {
@@ -63,30 +61,15 @@ var request = axios.create({
         return rgba;
     }
 
-    (function() {
-        // var calendar;
-        // var id = 0;
-
+    (function() { // do not erase !
         calendar = new CalendarInfo();
-        id += 1;
+        id = 0;
         calendar.id = String(id);
-        calendar.name = '공개SW프로젝트';
+        calendar.name = 'sample';
         calendar.color = '#ffffff';
         calendar.bgColor = '#9e5fff';
         calendar.dragBgColor = '#9e5fff';
         calendar.borderColor = '#9e5fff';
-        addCalendar(calendar);
-
-        calendar = new CalendarInfo();
-        id += 1;
-        calendar.id = String(id);
-        calendar.name = '자료구조와실습';
-        calendar.color = '#ffffff';
-        calendar.bgColor = '#00a9ff';
-        calendar.dragBgColor = '#00a9ff';
-        calendar.borderColor = '#00a9ff';
-        addCalendar(calendar);
-
     })();
 
     cal = new Calendar('#calendar', {
@@ -685,6 +668,7 @@ var request = axios.create({
             dragBgColor: CalendarData.bgColor,
             borderColor: CalendarData.borderColor,
         };
+        addCalendar(calendar);
         return calendar;
     }
 
@@ -898,7 +882,6 @@ var request = axios.create({
             $.each(list, function(index, item) {
                 var calendar = createCalendarData(item);
                 console.log(item)
-                //createCalendar(calendar, true);
             });
             console.log('받아오기');
             //showCalendar(list);
@@ -934,8 +917,7 @@ var request = axios.create({
         calendar.bgColor = randColor;
         calendar.dragBgColor = randColor;
         calendar.borderColor = randColor;
-        addCalendar(calendar);
-        //createCalendarData(calendar);
+        createCalendarData(calendar);
     });
 
     window.cal = cal;
@@ -945,21 +927,6 @@ var request = axios.create({
     setSchedules();
     setEventListener();
 })(window, tui.Calendar);
-
-// set calendars
-// (function() {
-//     var calendarList = document.getElementById('calendarList');
-//     var html = [];
-//     CalendarList.forEach(function(calendar) {
-//         html.push('<div class="lnb-calendars-item"><label>' +
-//             '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + calendar.id + '" checked>' +
-//             '<span style="border-color: ' + calendar.borderColor + '; background-color: ' + calendar.borderColor + ';"></span>' +
-//             '<span>' + calendar.name + '</span>' +
-//             '</label></div>'
-//         );
-//     });
-//     calendarList.innerHTML = html.join('\n');
-// })();
 
 let isLogin = false;
 request.get('/loged').then(function() {
