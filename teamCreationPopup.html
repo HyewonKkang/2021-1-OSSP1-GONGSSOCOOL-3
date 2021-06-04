@@ -12,18 +12,20 @@
         <link rel="stylesheet" type="text/css" href="./src/css/login.css">
         <script src="./src/index.js"></script>
         <style>
-        #addbtn { 
-            position:absolute;
-            left: 300px; 
-            width:30px;
-            height:30px;
-        }
+            #addbtn { 
+                position:absolute;
+                left: 90%; 
+                bottom: 51%;
+                width:9.5%;
+                height:7%;
+                cursor: pointer;
+            }
         </style>
         <script>
             const add_textbox = () => {
                 const box = document.getElementById("textBox");
                 const newP = document.createElement('p');
-                newP.innerHTML = "<div id='textBox'> <input type='text' class='teamAdd' placeholder='팀원 초대 (이메일)'> <hr width='240px'></div>";
+                newP.innerHTML = "<div class='teamAddNEW'> <div class='teamAddNew'> <input type='text' class='teamAdd' placeholder='초대할 팀원의 이메일 입력' ></div></div>";
                 box.appendChild(newP);
             }
             const remove = (obj) => {
@@ -53,23 +55,22 @@
         </div>
         <div id="right">
             <div id="menu">
-
             </div>
-            <div>
-                <form action="index.html" method="post" class="teamForm">
-                    <h2>Team Creation</h2>
-                    <div>
-                        <span style="font-size:1.3em;">생성할 팀 이름을 입력하세요.</span>
-                        <input type="text" class="teamName" placeholder="팀 이름 (과목이름)" style="margin-top:25px;">
-                        <hr width="230px" style="margin-bottom: 50px;">
-                    </div>
-                    <div>
-                        <span style="font-size:1.3em;">초대할 팀원의 이메일을 입력하세요.</span>
-                        <div id="textBox" style="margin-top:25px;">
-                            <image type="button" id="addbtn" src="./src/css/image/free-icon-add-button-4601618.png" style="opacity: 1" onclick="add_textbox()"></image>
-                            <input type="text" class="teamAdd" placeholder="팀원 초대 (이메일)" >
-                            <hr width="230px">
+            <div class="teamBox">
+                <form id="login" action="index.html" method="post" class="loginForm" onsubmit="return false;">
+                    <h2><b>Team Creation</b></h2>
+                    <div class="teamNameForm">
+                        <div class='teamNameForm2'>
+                            <input type='text' class='teamName' placeholder='생성할 팀 이름 입력' >
                         </div>
+                    </div>
+                    <div class="teamAddForm">
+                        <div class="teamAddForm2">
+                            <input type="text" class="teamAdd" placeholder="초대할 팀원의 이메일 입력" >
+                        </div>
+                        <div id="textBox">
+                            <image type="button" id="addbtn" src="./src/css/image/free-icon-add-button-4601618.png" style="opacity: 1" onclick="add_textbox()"></image>  
+                        </div> 
                     </div>
                     <button type="button" class="btn">
                         SAVE
