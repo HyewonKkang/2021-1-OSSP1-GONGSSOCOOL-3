@@ -1,5 +1,5 @@
 <DOCTYPE HTML5>
-    <html>
+<html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <title>TOAST UI Calendar App - Team Creation Page</title>
@@ -12,25 +12,66 @@
         <link rel="stylesheet" type="text/css" href="./src/css/login.css">
         <script src="./src/index.js"></script>
         <style>
-            #addbtn { 
-                position:absolute;
-                left: 90%; 
-                bottom: 51%;
-                width:9.5%;
-                height:7%;
-                cursor: pointer;
-            }
+        #addbtn {
+            position:absolute;
+            left: 300px;
+            width:30px;
+            height:30px;
+        }
         </style>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
+        <script src="https://uicdn.toast.com/tui.time-picker/v2.0.3/tui-time-picker.min.js"></script>
+        <script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
+        <!-- <script src="./js/theme/dooray.js"></script> -->
+        <script src="./src/app.js"></script>
         <script>
+
+            $.fn.serializeObject = function() {
+                var obj = {};
+                $.each(this.serializeArray(), function(i, o) {
+                    var n = o.name, v = o.value;
+                    obj[n] = obj[n] === undefined ? v
+                        : $.isArray(obj[n]) ? obj[n].concat(v)
+                            : [obj[n], v];
+                });
+                return obj;
+            };
+
             const add_textbox = () => {
-                const box = document.getElementById("textBox");
+                const box = document.getElementById('textBox');
                 const newP = document.createElement('p');
-                newP.innerHTML = "<div class='teamAddNEW'> <div class='teamAddNew'> <input type='text' class='teamAdd' placeholder='초대할 팀원의 이메일 입력' ></div></div>";
+                newP.innerHTML = '<div id=\'textBox\'> <input type=\'text\' name=\'teamMember\' class=\'teamAdd\' placeholder=\'팀원 초대 (이메일)\'> <hr width=\'240px\'></div>';
                 box.appendChild(newP);
-            }
+            };
             const remove = (obj) => {
                 document.getElementById('box').removeChild(obj.parentNode);
-            }
+            };
+            const submit_team = () => {
+                let form = $('#teamForm').serializeObject();
+                if (!form.teamName) {
+                    window.alert('please input team name');
+                    return;
+                }
+                form.teamMember = Array.isArray(form.teamMember) ? form.teamMember : [form.teamMember];
+                for (var i = 0; i < form.teamMember.length; i++) {
+                    if (!/^[A-Za-zd0-9]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/.test(form.teamMember[i])) {
+                        window.alert('please input right email address');
+                        return false;
+                    }
+                }
+                request.post('/team', form).then(function(res) {
+                    window.alert(res.data.msg);
+                    window.close();
+                }).catch(function({response}) {
+                    let msg = response.data.msg;
+                    window.alert(msg);
+                });
+            };
         </script>
     </head>
     <body>
@@ -55,39 +96,29 @@
         </div>
         <div id="right">
             <div id="menu">
+
             </div>
-            <div class="teamBox">
-                <form id="login" action="index.html" method="post" class="loginForm" onsubmit="return false;">
-                    <h2><b>Team Creation</b></h2>
-                    <div class="teamNameForm">
-                        <div class='teamNameForm2'>
-                            <input type='text' class='teamName' placeholder='생성할 팀 이름 입력' >
+            <div>
+                <form id="teamForm" action="#" method="post" class="teamForm">
+                    <h2>Team Creation</h2>
+                    <div>
+                        <span style="font-size:1.3em;">생성할 팀 이름을 입력하세요.</span>
+                        <input type="text" name="teamName" class="teamName" placeholder="팀 이름 (과목이름)" style="margin-top:25px;">
+                        <hr width="230px" style="margin-bottom: 50px;">
+                    </div>
+                    <div>
+                        <span style="font-size:1.3em;">초대할 팀원의 이메일을 입력하세요.</span>
+                        <div id="textBox" style="margin-top:25px;">
+                            <image type="button" id="addbtn" src="./src/css/image/free-icon-add-button-4601618.png" style="opacity: 1" onclick="add_textbox()"></image>
+                            <input type="text" name="teamMember" class="teamAdd" placeholder="팀원 초대 (이메일)" >
+                            <hr width="230px">
                         </div>
                     </div>
-                    <div class="teamAddForm">
-                        <div class="teamAddForm2">
-                            <input type="text" class="teamAdd" placeholder="초대할 팀원의 이메일 입력" >
-                        </div>
-                        <div id="textBox">
-                            <image type="button" id="addbtn" src="./src/css/image/free-icon-add-button-4601618.png" style="opacity: 1" onclick="add_textbox()"></image>  
-                        </div> 
-                    </div>
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" onclick="submit_team()">
                         SAVE
                     </button>
                 </form>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
-        <script src="https://uicdn.toast.com/tui.time-picker/v2.0.3/tui-time-picker.min.js"></script>
-        <script src="https://uicdn.toast.com/tui.date-picker/v4.0.3/tui-date-picker.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
-        <!-- <script src="./js/theme/dooray.js"></script> -->
-        <script src="./src/app.js"></script>
     </body>
 </html>
