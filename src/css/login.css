@@ -65,6 +65,38 @@ body {
   padding: 10px 10px;
 }
 
+.teamNameForm{
+  margin: 10%;
+  padding: 5% 5%;
+  margin-bottom:-10%;
+}
+
+.teamNameForm2{
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 1%;
+}
+
+.teamAddForm{
+  margin: 10%;
+  padding: 5% 5%;
+  margin-bottom:10%;
+}
+
+.teamAddForm2{
+  border-bottom: 2px solid #adadad;
+}
+
+.teamAddNEW {
+  margin: auto;
+  padding: auto;
+}
+
+.teamAddNew{
+  border-bottom: 1px solid #adadad;
+  margin-top: 5%;
+  width: 100%;
+}
+
 .email {
   width: 100%;
   border:none;
@@ -103,8 +135,6 @@ body {
   font-size:16px;
   height:25px;
   background: none;
-  margin-left: 15%;
-  margin-right: 15%;
 }
 
 .teamAdd {
@@ -115,8 +145,6 @@ body {
   font-size:16px;
   height:25px;
   background: none;
-  margin-left: 15%;
-  margin-right:15%;
 }
 
 .btn {
@@ -152,11 +180,6 @@ body {
   object-fit: cover;
 }
 
-hr{
-  margin:4%;
-  margin-left: 11%;
-}
-
 .btn-team-category {
   display: inline-block;
   height: 40px;
@@ -190,4 +213,16 @@ hr{
   border: 0;
   padding: 1.5px 3px;
   font-weight: bold;
+}
+
+.bkg {
+  height: 100%;
+  width: 100%;
+  object-fit : cover;
+}
+
+.relative { 
+  position: relative;
+  left: 300px;
+  top: 50px;
 }

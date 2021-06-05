@@ -73,10 +73,13 @@ body {
 
 #lnb {
   position: absolute;
-  width: 200px;
-  top: 49px;
+  width: 13%;
+  max-width: 100%;
+  max-height: 100%;
+  top: 6.5%;
   bottom: 0;
   border-right: 1px solid #d5d5d5;
+  margin-bottom: auto;
   padding: 12px 10px;
   background: #fafafa;
 }
