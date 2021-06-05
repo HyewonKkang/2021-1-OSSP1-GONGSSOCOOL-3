@@ -65,11 +65,13 @@ var request = axios.create({
         calendar = new CalendarInfo();
         id = 0;
         calendar.id = String(id);
-        calendar.name = 'sample';
+        calendar.name = '고정업무';
+        calendar.checked = true;
         calendar.color = '#ffffff';
         calendar.bgColor = '#9e5fff';
         calendar.dragBgColor = '#9e5fff';
         calendar.borderColor = '#9e5fff';
+        addCalendar(calendar);
     })();
 
     cal = new Calendar('#calendar', {
@@ -907,17 +909,25 @@ var request = axios.create({
 
 
     $('#btn-auto-schedule-creation2').on('click', function() {
-        var name=$('#subjectAdd').val();
-        var randColor = randomColor();
-        id += 1;
-        calendar.id = String(id);
-        calendar.name = name;
-        calendar.checked = true;
-        calendar.color = '#ffffff';
-        calendar.bgColor = randColor;
-        calendar.dragBgColor = randColor;
-        calendar.borderColor = randColor;
-        createCalendarData(calendar);
+        var idx;
+        var list;
+        request.get('/calendar').then(function(res) {
+            list = res.data;
+            idx = list.length;
+            $.each(list, function(index, item) {
+                var name = $('#subjectAdd').val();
+                var randColor = randomColor();
+                id = idx + 1;
+                calendar.id = String(idx+1);
+                calendar.name = name;
+                calendar.checked = true;
+                calendar.color = '#ffffff';
+                calendar.bgColor = randColor;
+                calendar.dragBgColor = randColor;
+                calendar.borderColor = randColor;
+                createCalendarData(calendar);
+            });
+        });
     });
 
     window.cal = cal;
