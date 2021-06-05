@@ -35,7 +35,15 @@ var request = axios.create({
             var data = res.data;
             console.log(data.name);
         });
-        CalendarList.push(calendar);
+        var dup_flag=0;
+        CalendarList.forEach(function(item) {
+            if (item.name === calendar.name) {
+                dup_flag=1;
+            }
+        });
+        if(dup_flag==0){
+            CalendarList.push(calendar);
+        }
     }
 
     function findCalendar(id) {
@@ -63,7 +71,7 @@ var request = axios.create({
 
     (function() { // do not erase !
         calendar = new CalendarInfo();
-        id = 0;
+        id = 1;
         calendar.id = String(id);
         calendar.name = '고정업무';
         calendar.checked = true;
