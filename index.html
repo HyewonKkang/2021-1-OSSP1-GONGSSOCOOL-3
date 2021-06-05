@@ -30,10 +30,11 @@
                     </label>
                 </div>
             </div>
-            <div>
-                개인업무
-                <button id="btn-auto-schedule-creation" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
-                <div id="calendarList" class="lnb-calendars-d1"></div>
+            <div id="textBox">
+                <span style="float: left;">개인업무</span>
+                <input id="btn-auto-schedule-creation2" class="btn btn-default btn-block lnb-auto-schedule-btn" value="Save"></input>
+                <div id="calendarList" class="lnb-calendars-d1" style="float: left;"></div>
+                <input id="subjectAdd" class="add-subject-input" type="text" name="subject" placeholder='과목 추가'></input>
             </div>
             <div>
             협업
@@ -106,7 +107,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
     <script src="./dist/tui-calendar.js"></script>
-    <script src="./src/js/data/calendars.js"></script>
+    <!-- <script src="./src/js/data/calendars.js"></script> -->
     <script src="./src/js/data/schedules.js"></script>
     <!-- <script src="./js/theme/dooray.js"></script> -->
     <script src="./src/app.js"></script>
