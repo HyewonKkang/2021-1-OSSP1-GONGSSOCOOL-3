@@ -69,3 +69,4 @@ perf/**/*.json
 *.md
 examples/
 docs/
+*.db
