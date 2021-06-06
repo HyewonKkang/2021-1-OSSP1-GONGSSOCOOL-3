@@ -2,6 +2,7 @@ const schedule = require('./schedule');
 const user = require('./user');
 const calendar = require('./calendar');
 const notice = require('./notice');
+const team = require('./team');
 
 module.exports = {
     init(app) {
@@ -29,5 +30,6 @@ module.exports = {
         calendar.init(app);
         user.init(app);
         notice.init(app);
+        team.init(app);
     }
 };

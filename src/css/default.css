@@ -11,6 +11,11 @@ body {
   border-color: #ddd;
 }
 
+.add-subject-input {
+  border: 1px solid #d3d3d3;
+  background: transparent;
+}
+
 .btn:hover {
   border: solid 1px #bbb;
   background-color: #fff;
