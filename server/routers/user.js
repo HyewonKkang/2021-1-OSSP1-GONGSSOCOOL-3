@@ -75,7 +75,7 @@ module.exports = {
          */
         router.get('/loged', (req, res) => {
             if (req.session.user) {
-                res.send(200);
+                res.send(req.session.user);
             } else {
                 res.send(401);
             }

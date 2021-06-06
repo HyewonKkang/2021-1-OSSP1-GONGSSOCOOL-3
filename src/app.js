@@ -43,7 +43,6 @@ var request = axios.create({
             }
         });
         if(dup_flag==0){
-            console.log('push');
             CalendarList.push(calendar);
         }
     }
@@ -61,7 +60,6 @@ var request = axios.create({
             else { // 개인업무 카테고리 Calendar 객체
                 if (calendar.id === id) {
                     found = calendar;
-                    console.log(found)
                 }
             }
         });
@@ -1062,9 +1060,17 @@ var request = axios.create({
 })();
 
 let isLogin = false;
-request.get('/loged').then(function() {
+request.get('/loged').then(function(res) {
     isLogin = true;
     $('#btn-logout').show();
+    
+    var userName = document.getElementById('user-name');
+    var html = [];
+    var name = res.data.email.split("@");
+
+    html.push(name[0] + " 님 안녕하세요");
+    userName.innerHTML = html.join('\n');
+    
 }).catch(function() {
     $('#btn-login').show();
 });
