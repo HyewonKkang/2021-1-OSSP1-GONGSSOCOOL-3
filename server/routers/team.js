@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const User = require('../models/User');
 const Team = require('../models/Team');
 const TeamMember = require('../models/TeamMember');
+const Notice = require('../models/Notice');
 
 module.exports = {
     init(app) {
@@ -39,6 +40,12 @@ module.exports = {
                             uid: find.id
                         });
                         member = await member.save();
+
+                        let invite = new Notice({
+                            uid: find.id,
+                            context: "새로운 팀 "+ name +"에 초대되었습니다."
+                        });
+                        invite = await invite.save();
                     }
                     res.status(200).send({msg: 'create success'});
                 }
