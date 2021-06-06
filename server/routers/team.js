@@ -37,7 +37,8 @@ module.exports = {
                         let find = await User.findOne({email: email});
                         let member = new TeamMember({
                             tid: team.id,
-                            uid: find.id
+                            uid: find.id,
+                            tname: team.name
                         });
                         member = await member.save();
 
@@ -56,9 +57,19 @@ module.exports = {
         /**
          * get current user teams
          */
-        router.get('/', (req, res) => {
+  
+        router.get('/', async (req, res) => {
+            try {
+                let list = await TeamMember.find({
+                    uid: req.session.user.id
+                });
+                console.log(list)
+                res.json(list);
+                console.log("get team");
+            }catch (error) {
+                res.status(500).send({msg: error.toString()});
+            }
         });
-
         app.use('/team', router);
     }
 };

@@ -941,7 +941,6 @@ var request = axios.create({
             list = res.data;
             $.each(list, function(index, item) {
                 var calendar = createCalendarData(item);
-                console.log(item)
             });
             console.log('받아오기');
             //showCalendar(list);
@@ -960,7 +959,25 @@ var request = axios.create({
             refreshScheduleVisibility();
         });
     })();
-    (function showCalendar(CalendarList) {
+  
+    // set Team
+    (function setTeam() {
+        var list = [];
+        request.get('/team').then(function(res) {
+            list = res.data;
+            var teamList = document.getElementById('teamList');
+            var html = [];
+            list.forEach(function(team) { 
+                html.push('<div class="lnb-calendars-item"><label>' +
+                    '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + "123" + '" checked>' +
+                    '<span style="border-color: ' + "#ededed" + '; background-color: ' + "#ededed" + ';"></span>' +
+                    '<span>' + team.tname + '</span>' +
+                    '</label></div>'
+                );
+            });
+            teamList.innerHTML = html.join('\n');
+            refreshScheduleVisibility();
+        });
     })();
 
     $('#btn-auto-schedule-creation2').on('click', function() {

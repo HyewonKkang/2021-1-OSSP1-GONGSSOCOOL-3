@@ -32,15 +32,14 @@
             </div>
             <div id="textBox">
                 <span style="float: left;">개인업무</span>
-                <input id="btn-auto-schedule-creation2" class="btn btn-default btn-block lnb-auto-schedule-btn" value="Save"></input>
+                <input id="btn-auto-schedule-creation2" class="btn btn-default btn-block lnb-auto-schedule-btn" value="Add"></input><br>
                 <div id="calendarList" class="lnb-calendars-d1" style="float: left;"></div>
                 <input id="subjectAdd" class="add-subject-input" type="text" name="subject" placeholder='과목 추가'></input>
             </div>
-            <div>
-            협업
-                <button id="btn-team-work" class="btn btn-default btn-block lnb-auto-schedule-btn" type="button">Add</button>
-                <script type="text/javascript" src="./src/js/view/popup/teamWorkPopup.js"></script>
-                <div id="collaboList" class="lnb-calendars-d2"></div>
+            <div id="textBox">
+                <span style="float: left;">협업</span>
+                <input id="btn-team-work" class="btn btn-default btn-block lnb-auto-schedule-btn" value="Add" onclick="window.open('teamCreationPopup.html')"></input><br>
+                <div id="teamList" class="lnb-calendars-d1" ></div>
             </div>
             <div><br><br><br><br><br><br><br><br><br><br><br><br></div>
             <div>

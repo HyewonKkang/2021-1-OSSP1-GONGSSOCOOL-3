@@ -11,6 +11,7 @@ const TeamMemberSchema = new mongoose.Schema({
             return uuid.v4();
         }
     },
+    tname: String,
     tid: String,
     uid: String,
     createAt: {
