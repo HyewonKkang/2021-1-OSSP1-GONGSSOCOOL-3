@@ -19,6 +19,7 @@ var request = axios.create({
     var id = 0;
 
     var CalendarList = [];
+    var TeamList = [];
 
     function CalendarInfo() {
         this.id = null;
@@ -47,15 +48,28 @@ var request = axios.create({
         }
     }
 
-    function findCalendar(id) {
+    function findCalendar(id) { // 스케줄의 calendarId
         var found;
-
+        
         CalendarList.forEach(function(calendar) {
-            if (calendar.id === id) {
-                found = calendar;
+            if (calendar.id.length > 5) { // 팀으로 만든 Calendar 객체
+                if (calendar.id === id) {
+                    found = createCalendarData_Team(calendar);
+                    console.log(found)
+                }
+            }
+            else { // 개인업무 카테고리 Calendar 객체
+                if (calendar.id === id) {
+                    found = calendar;
+                    console.log(found)
+                }
             }
         });
 
+        if (found === "") {
+            console.log(found);
+        }
+            
         return found || CalendarList[0];
     }
 
@@ -703,6 +717,21 @@ var request = axios.create({
         return calendar;
     }
 
+    function createCalendarData_Team(CalendarData) {   
+
+        var calendar = {
+            id: CalendarData.id,
+            name: CalendarData.name,
+            checked: CalendarData.checked,
+            color: CalendarData.color,
+            bgColor: CalendarData.bgColor,
+            dragBgColor: CalendarData.bgColor,
+            borderColor: CalendarData.borderColor,
+        };
+
+        return calendar;
+    }
+
     function createCalendar(calendar) {
 
         cal.createCalendar([calendar]);
@@ -965,13 +994,17 @@ var request = axios.create({
         var list = [];
         request.get('/team').then(function(res) {
             list = res.data;
+            $.each(list, function(index, item) {
+                var team = createCalendarData_Team(item);
+                CalendarList.push(team);
+            });
             var teamList = document.getElementById('teamList');
             var html = [];
             list.forEach(function(team) { 
                 html.push('<div class="lnb-calendars-item"><label>' +
                     '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + "123" + '" checked>' +
-                    '<span style="border-color: ' + "#ededed" + '; background-color: ' + "#ededed" + ';"></span>' +
-                    '<span>' + team.tname + '</span>' +
+                    '<span style="border-color: ' + team.borderColor + '; background-color: ' + team.bgColor + ';"></span>' +
+                    '<span>' + team.name + '</span>' +
                     '</label></div>'
                 );
             });

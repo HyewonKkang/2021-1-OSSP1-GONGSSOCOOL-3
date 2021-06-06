@@ -18,7 +18,12 @@ const TeamSchema = new mongoose.Schema({
         default: function() {
             return new Date();
         }
-    }
+    },
+    checked: Boolean,
+    color: String,
+    bgColor: String,
+    dragBgColor: String,
+    borderColor: String
 });
 
 const Team = mongoose.model('team', TeamSchema);

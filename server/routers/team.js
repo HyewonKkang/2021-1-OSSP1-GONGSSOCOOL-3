@@ -29,7 +29,12 @@ module.exports = {
                     members.unshift(user.email);
                     let team = new Team({
                         name: name,
-                        owner: user.id
+                        owner: user.id,
+                        checked: true,
+                        color: "#ffffff",
+                        bgColor: "#dbdbdb",
+                        dragBgColor: "#dbdbdb",
+                        borderColor: "#dbdbdb"
                     });
                     team = await team.save();
                     for (let i = 0; i < members.length; i++) {
@@ -59,14 +64,22 @@ module.exports = {
          */
   
         router.get('/', async (req, res) => {
+            var list = [];
             try {
-                let list = await TeamMember.find({
+                let members = await TeamMember.find({
                     uid: req.session.user.id
-                });
+                })
+
+                for (var i=0; i<members.length; i++) {
+                    list.push(await Team.findOne({
+                        id: members[i].tid
+                    }))
+                }
                 console.log(list)
+                
                 res.json(list);
                 console.log("get team");
-            }catch (error) {
+            } catch (error) {
                 res.status(500).send({msg: error.toString()});
             }
         });
