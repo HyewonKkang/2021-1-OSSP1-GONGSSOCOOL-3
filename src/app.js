@@ -15,72 +15,6 @@ var request = axios.create({
     var useCreationPopup = true;
     var useDetailPopup = true;
     var datePicker, selectedCalendar;
-    var calendar;
-    var id = 0;
-
-    var CalendarList = [];
-
-    function CalendarInfo() {
-        this.id = null;
-        this.name = null;
-        this.checked = true;
-        this.color = null;
-        this.bgColor = null;
-        this.borderColor = null;
-        this.dragBgColor = null;
-    }
-
-    function addCalendar(calendar) {
-        request.post('/calendar', calendar).then(function(res) {
-            var data = res.data;
-            console.log(data.name);
-        });
-        var dup_flag=0;
-        CalendarList.forEach(function(item) {
-            if (item.name === calendar.name) {
-                dup_flag=1;
-            }
-        });
-        if(dup_flag==0){
-            CalendarList.push(calendar);
-        }
-    }
-
-    function findCalendar(id) {
-        var found;
-
-        CalendarList.forEach(function(calendar) {
-            if (calendar.id === id) {
-                found = calendar;
-            }
-        });
-
-        return found || CalendarList[0];
-    }
-
-    function hexToRGBA(hex) {
-        var radix = 16;
-        var r = parseInt(hex.slice(1, 3), radix),
-            g = parseInt(hex.slice(3, 5), radix),
-            b = parseInt(hex.slice(5, 7), radix),
-            a = parseInt(hex.slice(7, 9), radix) / 255 || 1;
-        var rgba = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
-
-        return rgba;
-    }
-
-    (function() { // do not erase !
-        calendar = new CalendarInfo();
-        id = 1;
-        calendar.id = String(id);
-        calendar.name = '고정업무';
-        calendar.checked = true;
-        calendar.color = '#ffffff';
-        calendar.bgColor = '#9e5fff';
-        calendar.dragBgColor = '#9e5fff';
-        calendar.borderColor = '#9e5fff';
-        addCalendar(calendar);
-    })();
 
     cal = new Calendar('#calendar', {
         defaultView: 'month',
@@ -130,13 +64,18 @@ var request = axios.create({
 
             if(duration !== "" && importance !== "" && times !== "") {
                 autoScheduling(e);
-            } else {
+            }else if(duration == "" && importance == "" && times !=""){
+                teamScheduling(e);
+            } 
+            else {
                 request.post('/schedule', schedule).then(function(res) {
                     var data = res.data;
                     var schedule = createScheduleData(data);
                     createSchedules(schedule);
                 });
             }
+
+            
         },
         'beforeUpdateSchedule': function(e) {
             var schedule = e.schedule;
@@ -681,27 +620,6 @@ var request = axios.create({
         refreshScheduleVisibility();
     }
 
-    function createCalendarData(CalendarData) {   
-        var calendar = {
-            id: CalendarData.id,
-            name: CalendarData.name,
-            checked: CalendarData.checked,
-            color: CalendarData.color,
-            bgColor: CalendarData.bgColor,
-            dragBgColor: CalendarData.bgColor,
-            borderColor: CalendarData.borderColor,
-        };
-        addCalendar(calendar);
-        return calendar;
-    }
-
-    function createCalendar(calendar) {
-
-        cal.createCalendar([calendar]);
-
-        refreshScheduleVisibility();
-    }
-
     function onChangeCalendars(e) {
         var calendarId = e.target.value;
         var checked = e.target.checked;
@@ -874,112 +792,9 @@ var request = axios.create({
         return target.dataset ? target.dataset.action : target.getAttribute('data-action');
     }
 
-    function randomColor() {
-        var decimal = getRanNum();
-        var hexNum = hex(decimal);
-        return "#" + hexNum;
-    }
-
-    //랜덤 10진수 생성
-    function getRanNum() {
-        var number = Math.floor(Math.random() * 16777216); //0 ~ ffffff
-        return number;
-    }
-
-    //10진수를 16진수로 변환
-    function hex(number) {
-        var abcHex = [ "a", "b", "c", "d", "e", "f" ];
-        var result = "";
-        while (number > 0) {
-            var temp = number % 16;
-            if (temp >= 10) {
-                result += abcHex[temp - 10];
-            } else {
-                result += temp;
-            }
-            number = Math.floor(number / 16);
-        }
-        result = lpad(result); //16진수 자리수 6자리로 맞추기
-        result = reverse(result); //거꾸로 저장된 16진수값 뒤집기
-        return result;
-    }
-
-    //거꾸로 입력된 16진수 뒤집기
-    function reverse(number) {
-        var result = "";
-        for (var i = number.length - 1; i >= 0; i--) {
-            result += number.charAt(i);
-        }
-        return result;
-    }
-
-     //16진수값을 6자리로 맞춰주기
-    function lpad(number) {
-        var result = number;
-        while (result.length < 6) {
-            result += "0";
-        }
-        return result;
-    }
-
-
     resizeThrottled = tui.util.throttle(function() {
         cal.render();
     }, 50);
-
-    // set calendars
-    (function setCalendar() {
-        var list;
-        request.get('/calendar').then(function(res) {
-            list = res.data;
-            $.each(list, function(index, item) {
-                var calendar = createCalendarData(item);
-                console.log(item)
-            });
-            console.log('받아오기');
-            //showCalendar(list);
-            console.log('받아출력!');
-            var calendarList = document.getElementById('calendarList');
-            var html = [];
-            list.forEach(function(calendar) { 
-                html.push('<div class="lnb-calendars-item"><label>' +
-                    '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + calendar.id + '" checked>' +
-                    '<span style="border-color: ' + calendar.borderColor + '; background-color: ' + calendar.borderColor + ';"></span>' +
-                    '<span>' + calendar.name + '</span>' +
-                    '</label></div>'
-                );
-            });
-            calendarList.innerHTML = html.join('\n');
-            refreshScheduleVisibility();
-        });
-    })();
-    (function showCalendar(CalendarList) {
-
-
-    })();
-
-
-    $('#btn-auto-schedule-creation2').on('click', function() {
-        var idx;
-        var list;
-        request.get('/calendar').then(function(res) {
-            list = res.data;
-            idx = list.length;
-            $.each(list, function(index, item) {
-                var name = $('#subjectAdd').val();
-                var randColor = randomColor();
-                id = idx + 1;
-                calendar.id = String(idx+1);
-                calendar.name = name;
-                calendar.checked = true;
-                calendar.color = '#ffffff';
-                calendar.bgColor = randColor;
-                calendar.dragBgColor = randColor;
-                calendar.borderColor = randColor;
-                createCalendarData(calendar);
-            });
-        });
-    });
 
     window.cal = cal;
 
