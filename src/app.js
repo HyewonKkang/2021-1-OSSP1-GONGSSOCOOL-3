@@ -1031,6 +1031,7 @@ var request = axios.create({
                 createCalendarData(calendar);    
             });
         });
+        location.reload();
     });
 
     window.cal = cal;
