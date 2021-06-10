@@ -70,11 +70,9 @@
                         }
                     }
                     window.close();
+                    opener.document.location.reload();
                     request.post('/team', form).then(function(res) {
-                        window.alert(res.data.msg);
-                        
-                        // opener.document.location.reload();
-                        // self.close();
+
                     }).catch(function({response}) {
                         let msg = response.data.msg;
                         window.alert(msg);

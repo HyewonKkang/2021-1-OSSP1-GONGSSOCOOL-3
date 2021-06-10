@@ -36,38 +36,18 @@ var request = axios.create({
             var data = res.data;
             console.log(data.name);
         });
-        var dup_flag=0;
-        CalendarList.forEach(function(item) {
-            if (item.name === calendar.name) {
-                dup_flag=1;
-            }
-        });
-        if(dup_flag==0){
-            CalendarList.push(calendar);
-        }
+        console.log(CalendarList);
     }
 
-    function findCalendar(id) { // 스케줄의 calendarId
+    function findCalendar(id) {
         var found;
-        
+
         CalendarList.forEach(function(calendar) {
-            if (calendar.id.length > 5) { // 팀으로 만든 Calendar 객체
-                if (calendar.id === id) {
-                    found = createCalendarData_Team(calendar);
-                    console.log(found)
-                }
-            }
-            else { // 개인업무 카테고리 Calendar 객체
-                if (calendar.id === id) {
-                    found = calendar;
-                }
+            if (calendar.id === id) {
+                found = calendar;
             }
         });
 
-        if (found === "") {
-            console.log(found);
-        }
-            
         return found || CalendarList[0];
     }
 
@@ -81,23 +61,6 @@ var request = axios.create({
 
         return rgba;
     }
-
-    (function() { // do not erase !
-        request.get('/loged').then(function(res) {
-            var data = res.data;
-            id=data.id;
-            calendar = new CalendarInfo();
-            //id = 1;
-            calendar.id = String(id);
-            calendar.name = '고정업무';
-            calendar.checked = true;
-            calendar.color = '#ffffff';
-            calendar.bgColor = '#9e5fff';
-            calendar.dragBgColor = '#9e5fff';
-            calendar.borderColor = '#9e5fff';
-            addCalendar(calendar);
-        });
-    })();
 
     cal = new Calendar('#calendar', {
         defaultView: 'month',
@@ -1082,12 +1045,11 @@ var request = axios.create({
         var list;
         request.get('/calendar').then(function(res) {
             list = res.data;
-            $.each(list, function(index, item) {
-                var calendar = createCalendarData(item);
-            });
+            console.log(list);
             var calendarList = document.getElementById('calendarList');
             var html = [];
             list.forEach(function(calendar) { 
+                CalendarList.push(calendar);
                 html.push('<div class="lnb-calendars-item"><label>' +
                     '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + calendar.id + '" checked>' +
                     '<span style="border-color: ' + calendar.borderColor + '; background-color: ' + calendar.borderColor + ';"></span>' +
@@ -1124,26 +1086,22 @@ var request = axios.create({
         });
     })();
 
-    $('#btn-auto-schedule-creation2').on('click', function() {
-        var idx;
-        var list;
-        request.get('/calendar').then(function(res) {
-            list = res.data;
-            var name = $('#subjectAdd').val();
-            var randColor = randomColor();
-            //id = idx + 1;
-            calendar.id = function genUUID() {
-                return uuid.v4();
-            };
-            calendar.name = name;
-            calendar.checked = true;
-            calendar.color = '#ffffff';
-            calendar.bgColor = randColor;
-            calendar.dragBgColor = randColor;
-            calendar.borderColor = randColor;
-            createCalendarData(calendar);   
-        });
-        //location.reload();
+    $('#btn-auto-schedule-creation2').on('click', function() { 
+        var name = $('#subjectAdd').val();
+        var randColor = randomColor();
+        calendar = new CalendarInfo();
+        calendar.id = function genUUID() {
+            return uuid.v4();
+        };
+        calendar.name = name;
+        calendar.checked = true;
+        calendar.color = '#ffffff';
+        calendar.bgColor = randColor;
+        calendar.dragBgColor = randColor;
+        calendar.borderColor = randColor;
+        createCalendarData(calendar);  
+         
+        location.reload();
     });
 
     window.cal = cal;
