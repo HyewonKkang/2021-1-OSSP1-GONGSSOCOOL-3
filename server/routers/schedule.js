@@ -14,6 +14,11 @@ module.exports = {
             res.json(list);
             console.log('get');
         });
+        router.get('/team_schedule', async (req, res) => {
+            let list = await Schedule.find();
+            res.json(list);
+            console.log('get');
+        });
         /**
          *  Create schedule
          */

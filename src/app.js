@@ -892,8 +892,118 @@ var request = axios.create({
 
     var teamWork = document.getElementById('teamSchedule');
 
-    function searchTeamSchedule() { // 전체 팀원의 스케줄 가운데 빈 부분 추출
+    function teamScheduling(scheduleData) { // 전체 팀원의 스케줄 가운데 빈 부분 추출
+        var schedule = createScheduleData(scheduleData);
+        console.log("teamScheduling");
+        var temp_schedules = new Array(); // 임시로 고정 일정 저장
+        var fixed_schedules = new Array(); // 고정 일정
         
+        var team_start = Date.parse(schedule.start);
+        var team_end = Date.parse(schedule.end);
+        var memberList = [];
+        var scheduleList=[];
+        function getMembers(){
+            return new Promise(function(resolve){
+                console.log("promise");
+                request.get('/teammembers').then(function(res){
+                    var list = res.data;
+                    $.each(list, function(index, item){
+                        if(item.tid == schedule.calendarId){
+                            memberList.push(item);
+                        }
+                    })
+                    resolve(res);
+                })
+                console.log(memberList);
+            })
+        }
+        getMembers().then(function(){
+            return new Promise(function(resolve){
+                console.log("promise2");
+                request.get('/schedule/team_schedule').then(function(res){
+                    var list = res.data;
+                    console.log(list);
+                    for(var i=0; i<memberList.length; i++){
+                        console.log("for");
+                        $.each(list, function(index, item){
+                            var cmp_start = Date.parse(item.start);
+                            var cmp_end = Date.parse(item.end);
+                            if(item.uid == memberList[i].uid){
+                                if((team_end < cmp_start) || (cmp_end < team_start)) {
+                                } else { // 겹치는 일정이 있는 경우
+                                    scheduleList.push(item);
+                                }   
+                            }
+                        })
+                    }
+                    resolve(res);
+                })
+                console.log(scheduleList);
+            })
+        }).then(function(){
+            var start_ = new Date(team_start);
+            var end_ = new Date(team_end);
+            var cols = end_.getDate() - start_.getDate() + 1;
+            var rows = 48;
+
+            var timetable = create2DArray(rows, cols);
+
+            for(var i=0; i<scheduleList.length; i++) {
+                var data_start = new Date(scheduleList[i].start);
+                var data_end = new Date(scheduleList[i].end);
+                if (data_start.getDate() != data_end.getDate()) continue; // all day 일정
+                
+                var data_start_month = data_start.getMonth();
+                var data_start_date = data_start.getDate();
+                var data_start_hours = data_start.getHours();
+                var data_start_minutes = data_start.getMinutes();
+                var data_end_month = data_end.getMonth();
+                var data_end_date = data_end.getDate();
+                var data_end_hours = data_end.getHours();
+                var data_end_minutes = data_end.getMinutes();
+
+                var j_start, j_end;
+                j_start = (data_start_minutes < 30) ? data_start_hours * 2 : data_start_hours * 2 + 1;
+                if (data_end_minutes === 0) j_end = data_end_hours * 2 - 1;
+                else if (data_end_minutes <= 30) j_end = data_end_hours * 2;
+                else if (data_end_minutes > 30) j_end = data_end_hours * 2 + 1;
+
+                for(var k=data_start_date - start_.getDate(); k<=data_end_date - start_.getDate(); k++) {
+                    for(var j=j_start; j<=j_end; j++) {
+                        timetable[j][k] = 1;
+                    }
+                }
+            }
+
+            var dates = new Array();
+            var times = new Array();
+            var time = parseInt(schedule.raw['times'])
+            time = time * 2;
+
+            for(var i=0; i<cols; i++){
+                for(var j = 18; j<48-time; j++){
+                    if(timetable[j][i] === 0){
+                        var flag = 0;
+                        for(var k =0; k<time; k++){
+                            if(timetable[j+k][i]===0){
+                                flag++;
+                            }
+                        }
+                        if(flag === time){
+                            dates.push(i);
+                            times.push(j);
+                            for(var k=0; k<time; k++){
+                                timetable[j+k][i]=1;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            console.log(dates);
+            console.log(times);
+        })
     }
 
     function setEventListener() {
@@ -975,9 +1085,6 @@ var request = axios.create({
             $.each(list, function(index, item) {
                 var calendar = createCalendarData(item);
             });
-            console.log(list);
-            //showCalendar(list);
-            console.log('받아출력!');
             var calendarList = document.getElementById('calendarList');
             var html = [];
             list.forEach(function(calendar) { 
