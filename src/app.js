@@ -83,16 +83,20 @@ var request = axios.create({
     }
 
     (function() { // do not erase !
-        calendar = new CalendarInfo();
-        id = 1;
-        calendar.id = String(id);
-        calendar.name = '고정업무';
-        calendar.checked = true;
-        calendar.color = '#ffffff';
-        calendar.bgColor = '#9e5fff';
-        calendar.dragBgColor = '#9e5fff';
-        calendar.borderColor = '#9e5fff';
-        addCalendar(calendar);
+        request.get('/loged').then(function(res) {
+            var data = res.data;
+            id=data.id;
+            calendar = new CalendarInfo();
+            //id = 1;
+            calendar.id = String(id);
+            calendar.name = '고정업무';
+            calendar.checked = true;
+            calendar.color = '#ffffff';
+            calendar.bgColor = '#9e5fff';
+            calendar.dragBgColor = '#9e5fff';
+            calendar.borderColor = '#9e5fff';
+            addCalendar(calendar);
+        });
     })();
 
     cal = new Calendar('#calendar', {
@@ -409,6 +413,7 @@ var request = axios.create({
         var fixed_schedules = new Array(); // 고정 일정
         var auto_schedules = new Array(); // 자동 스케줄링 일정
 
+        var calendarId_origin = schedule.calendarId;
         var auto_start = Date.parse(schedule.start);
         var auto_end = Date.parse(schedule.end);
         var min_start, max_end;
@@ -619,6 +624,7 @@ var request = axios.create({
                         push_schedule.end = auto_end;
                         push_schedule.raw = {};
                         push_schedule.raw.class=auto_schedules[z].raw['class'];
+                        push_schedule.calendarId = calendarId_origin;
 
                         await fetchSchedule(push_schedule);
                     }
@@ -969,7 +975,7 @@ var request = axios.create({
             $.each(list, function(index, item) {
                 var calendar = createCalendarData(item);
             });
-            console.log('받아오기');
+            console.log(list);
             //showCalendar(list);
             console.log('받아출력!');
             var calendarList = document.getElementById('calendarList');
@@ -1016,22 +1022,21 @@ var request = axios.create({
         var list;
         request.get('/calendar').then(function(res) {
             list = res.data;
-            idx = list.length;
-            $.each(list, function(index, item) {
-               var name = $('#subjectAdd').val();
-                var randColor = randomColor();
-                id = idx + 1;
-                calendar.id = String(idx+1);
-                calendar.name = name;
-                calendar.checked = true;
-                calendar.color = '#ffffff';
-                calendar.bgColor = randColor;
-                calendar.dragBgColor = randColor;
-                calendar.borderColor = randColor;
-                createCalendarData(calendar);    
-            });
+            var name = $('#subjectAdd').val();
+            var randColor = randomColor();
+            //id = idx + 1;
+            calendar.id = function genUUID() {
+                return uuid.v4();
+            };
+            calendar.name = name;
+            calendar.checked = true;
+            calendar.color = '#ffffff';
+            calendar.bgColor = randColor;
+            calendar.dragBgColor = randColor;
+            calendar.borderColor = randColor;
+            createCalendarData(calendar);   
         });
-        location.reload();
+        //location.reload();
     });
 
     window.cal = cal;
