@@ -1203,7 +1203,18 @@ request.get('/loged').then(function(res) {
     var html = [];
     var name = res.data.email.split("@");
 
-    html.push(name[0] + " 님 안녕하세요");
+    var birthday = res.data.birthday;
+    console.log(birthday);
+    var bday = birthday.split('-');
+    let today = new Date();
+    var year = today.getFullYear(); 
+    var day = year+'-'+bday[1]+'-'+bday[2]; 
+    var startDay = new Date(day);   
+            
+    if(today.getMonth()===startDay.getMonth() && today.getDate()===startDay.getDate())
+        html.push(name[0] + " 님 생일 축하합니다!");
+    else
+        html.push(name[0] + " 님 안녕하세요");
     userName.innerHTML = html.join('\n');
     
 }).catch(function() {
