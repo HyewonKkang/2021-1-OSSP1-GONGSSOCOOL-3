@@ -8,7 +8,6 @@ var CalendarSchema = new mongoose.Schema({
     // ID
     id: {
         type: String,
-        unique: true,
         default: function genUUID() {
             return uuid.v4();
         }

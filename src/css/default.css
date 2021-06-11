@@ -12,7 +12,10 @@ body {
 }
 
 .add-subject-input {
-  border: 1px solid #d3d3d3;
+  BORDER-LEFT: none;
+  BORDER-RIGHT: none;
+  BORDER-TOP: none;
+  BORDER-BOTTOM: #d3d3d3 1.5px solid;
   background: transparent;
 }
 

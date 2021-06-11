@@ -32,9 +32,9 @@ module.exports = {
                         owner: user.id,
                         checked: true,
                         color: "#ffffff",
-                        bgColor: "#dbdbdb",
-                        dragBgColor: "#dbdbdb",
-                        borderColor: "#dbdbdb"
+                        bgColor: "#FEBB6C",
+                        dragBgColor: "#FEBB6C",
+                        borderColor: "#FEBB6C"
                     });
                     team = await team.save();
                     for (let i = 0; i < members.length; i++) {

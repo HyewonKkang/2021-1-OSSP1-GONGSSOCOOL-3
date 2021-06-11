@@ -1075,7 +1075,7 @@ var request = axios.create({
             var html = [];
             list.forEach(function(team) { 
                 html.push('<div class="lnb-calendars-item"><label>' +
-                    '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + "123" + '" checked>' +
+                    '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + team.id + '" checked>' +
                     '<span style="border-color: ' + team.borderColor + '; background-color: ' + team.bgColor + ';"></span>' +
                     '<span>' + team.name + '</span>' +
                     '</label></div>'
