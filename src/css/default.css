@@ -328,6 +328,11 @@ body {
   line-height: 30px;
 }
 
+.move-scheduling {
+  padding: 0 16px;
+  line-height: 30px;
+}
+
 .move-day {
   padding: 8px;
   font-size: 0;
