@@ -49,7 +49,7 @@ module.exports = {
 
                         let invite = new Notice({
                             uid: find.id,
-                            context: "새로운 팀 "+ name +"에 초대되었습니다."
+                            context: "새로운 팀 ["+ name +"]이 생성 되었습니다."
                         });
                         invite = await invite.save();
                     }

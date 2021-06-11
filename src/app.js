@@ -608,11 +608,11 @@ var request = axios.create({
         })
         .then(function(){
             var notice_ = {};
-            notice_.context = schedule.title +" 일정이 자동분배되어 배치되었습니다.";
+            notice_.context = "["+ schedule.title +"] 일정이 자동분배되어 배치되었습니다.";
             request.post('/notice', notice_).then(function(res) {
                 var data = res.data;
                 if (data.success) {
-                    window.alert('Register success');
+                    //window.alert('Register success');
                 }
             });
         })
@@ -775,6 +775,15 @@ var request = axios.create({
                 }
             }
             
+        }).then(function(){
+            var notice_ = {};
+            notice_.context = "오늘 일정이 중요도 순으로 재배치되었습니다.";
+            request.post('/notice', notice_).then(function(res) {
+                var data = res.data;
+                if (data.success) {
+                   // window.alert('Register success');
+                }
+            });
         })
             
     }
@@ -1116,8 +1125,11 @@ var request = axios.create({
                     }
                 }
             }
-            
 
+            if(dates.length === 0){
+                alert("모든 팀원들이 가능한 시간이 없습니다.");
+                return;
+            }
             var promptString = "팀원들의 가능한 시간입니다. 팀일정을 추가하고자 하는 시간의 번호를 입력하세요\n";
             for(var i=0; i<dates.length; i++){
                 promptString += '('+(i+1)+') '+ (schedule.start.getMonth()+1) + '월 ' + (schedule.start.getDate()+dates[i]) +'일 ';

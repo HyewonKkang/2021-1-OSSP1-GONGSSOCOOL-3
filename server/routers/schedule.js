@@ -1,5 +1,6 @@
 const Router = require('express').Router;
 const Schedule = require('../models/Schedule');
+const Notice = require('../models/Notice');
 
 module.exports = {
     init(app) {
@@ -32,6 +33,13 @@ module.exports = {
         router.post('/team_schedule', async (req, res) => {
             const schedule = new Schedule(req.body);
             const data = await schedule.save();
+            // 팀 스케줄 생성 notice
+            let invite = new Notice({
+                uid: schedule.uid,
+                context: "새로운 [" + schedule.title+"] 팀 일정이 생성되었습니다."
+            });
+            invite = await invite.save();
+            
             res.json(data);
             // res.json(1);
         });
