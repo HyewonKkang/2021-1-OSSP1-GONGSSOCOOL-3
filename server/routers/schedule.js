@@ -12,12 +12,10 @@ module.exports = {
                 uid: req.session.user.id
             });
             res.json(list);
-            console.log('get');
         });
         router.get('/team_schedule', async (req, res) => {
             let list = await Schedule.find();
             res.json(list);
-            console.log('get');
         });
         /**
          *  Create schedule
@@ -29,7 +27,12 @@ module.exports = {
             });
             const data = await schedule.save();
             res.json(data);
-            console.log('create');
+            // res.json(1);
+        });
+        router.post('/team_schedule', async (req, res) => {
+            const schedule = new Schedule(req.body);
+            const data = await schedule.save();
+            res.json(data);
             // res.json(1);
         });
         /**
@@ -41,7 +44,6 @@ module.exports = {
                 uid: req.session.user.id
             }, req.body);
             res.send();
-            console.log('put');
         });
         /**
          *  Delete schedule
@@ -58,7 +60,6 @@ module.exports = {
                 id: id,
                 calendarId: calendarId
             });
-            console.log('delete');
         });
         app.use('/schedule', router);
     }

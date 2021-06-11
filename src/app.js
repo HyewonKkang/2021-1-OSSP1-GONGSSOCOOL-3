@@ -381,8 +381,6 @@ var request = axios.create({
         var auto_end = Date.parse(schedule.end);
         var min_start, max_end;
 
-        console.log('autoScheduling');
-
         if (schedule.raw["duration"] > schedule.end.getDate() - schedule.start.getDate() + 1) { // Exception 1 - start ~ end date가 분배일수보다 작을 때
             alert("일정을 추가할 수 없습니다 (Duration out of range)");
             return;
@@ -597,7 +595,7 @@ var request = axios.create({
                     return new Promise(function(resolve) {
                         var schedule_ = createScheduleData(schedule);
                         schedule_.raw.duration="";
-                        schedule_.raw.importance="";
+                        //schedule_.raw.importance="";
                         schedule_.raw.times="";
                         request.post('/schedule', schedule_).then(function(res) {
                             var data = res.data;
@@ -610,11 +608,9 @@ var request = axios.create({
             }
         })
         .then(function(){
-            console.log("notice1");
             var notice_ = {};
             notice_.context = schedule.title +" 일정이 자동분배되어 배치되었습니다.";
             request.post('/notice', notice_).then(function(res) {
-                console.log("notice2");
                 var data = res.data;
                 if (data.success) {
                     window.alert('Register success');
@@ -857,17 +853,22 @@ var request = axios.create({
 
     function teamScheduling(scheduleData) { // 전체 팀원의 스케줄 가운데 빈 부분 추출
         var schedule = createScheduleData(scheduleData);
-        console.log("teamScheduling");
-        var temp_schedules = new Array(); // 임시로 고정 일정 저장
-        var fixed_schedules = new Array(); // 고정 일정
+        schedule.start.setHours(9);
+        schedule.start.setMinutes(0);
+        schedule.end.setHours(23);
+        schedule.end.setMinutes(59);
         
         var team_start = Date.parse(schedule.start);
         var team_end = Date.parse(schedule.end);
         var memberList = [];
         var scheduleList=[];
+        var dates = new Array();
+        var times = new Array();
+        var time = parseInt(schedule.raw['times'])
+
+        var num;
         function getMembers(){
             return new Promise(function(resolve){
-                console.log("promise");
                 request.get('/teammembers').then(function(res){
                     var list = res.data;
                     $.each(list, function(index, item){
@@ -877,17 +878,13 @@ var request = axios.create({
                     })
                     resolve(res);
                 })
-                console.log(memberList);
             })
         }
         getMembers().then(function(){
             return new Promise(function(resolve){
-                console.log("promise2");
                 request.get('/schedule/team_schedule').then(function(res){
                     var list = res.data;
-                    console.log(list);
                     for(var i=0; i<memberList.length; i++){
-                        console.log("for");
                         $.each(list, function(index, item){
                             var cmp_start = Date.parse(item.start);
                             var cmp_end = Date.parse(item.end);
@@ -901,7 +898,6 @@ var request = axios.create({
                     }
                     resolve(res);
                 })
-                console.log(scheduleList);
             })
         }).then(function(){
             var start_ = new Date(team_start);
@@ -938,9 +934,6 @@ var request = axios.create({
                 }
             }
 
-            var dates = new Array();
-            var times = new Array();
-            var time = parseInt(schedule.raw['times'])
             time = time * 2;
 
             for(var i=0; i<cols; i++){
@@ -964,8 +957,79 @@ var request = axios.create({
                 }
             }
             
-            console.log(dates);
-            console.log(times);
+
+            var promptString = "팀원들의 가능한 시간입니다. 팀일정을 추가하고자 하는 시간의 번호를 입력하세요\n";
+            for(var i=0; i<dates.length; i++){
+                promptString += '('+(i+1)+') '+ (schedule.start.getMonth()+1) + '월 ' + (schedule.start.getDate()+dates[i]) +'일 ';
+                if(times[i]%2 === 0){
+                    promptString += times[i]/2 + ':00 ~ ' + (times[i]/2+time/2) + ':00'; 
+                }
+                else{
+                    promptString += parseInt(times[i]/2) + ':30 ~' + (parseInt(times[i]/2)+time/2) + ':30'; 
+                }
+                promptString +='\n';
+            }
+            num = prompt(promptString);
+        }).then(function(){
+
+            var team_start_date = schedule.start.getDate() + dates[num-1];
+            var team_start_hours = parseInt(times[num-1]/2);
+            if(times[num-1]%2 === 0){var team_start_minutes = 0;}
+            else{var team_start_minutes = 30;}
+
+            var team_end_date = team_start_date;
+            var team_end_hours = team_start_hours + time/2;
+            var team_end_minutes = team_start_minutes;
+
+            var team_start = new Date(schedule.start);
+            team_start.setDate(team_start_date);
+            team_start.setHours(team_start_hours);
+            team_start.setMinutes(team_start_minutes);
+
+            var team_end = new Date(schedule.end);
+            team_end.setDate(team_end_date);
+            team_end.setHours(team_end_hours);
+            team_end.setMinutes(team_end_minutes);
+
+            setTeamSchedule();
+            async function setTeamSchedule(){
+                for(var i=0; i<memberList.length; i++){
+                    var team_schedule = {};
+                    team_schedule.title = schedule.title;
+                    team_schedule.isAllDay = schedule.isAllDay;
+                    team_schedule.location = schedule.location;
+                    team_schedule.category = schedule.category;
+                    team_schedule.dueDateClass = schedule.dueDateClass;
+                    team_schedule.color = schedule.color;
+                    team_schedule.bgColor = schedule.bgColor;
+                    team_schedule.dragBgColor = schedule.dragBgColor;
+                    team_schedule.borderColor = schedule.borderColor;
+                    team_schedule.start = team_start;
+                    team_schedule.end = team_end;
+                    team_schedule.raw = {};
+                    team_schedule.raw.class=schedule.raw['class'];
+                    team_schedule.calendarId = schedule.calendarId_origin;
+                    team_schedule.uid = memberList[i].uid;
+
+                    if(isNaN(team_schedule.start) || team_schedule.start === ""){
+
+                    }else{
+                        await fetchTeamSchedule(team_schedule);
+                    }
+                }
+            }
+
+            function fetchTeamSchedule(schedule){
+                return new Promise(function(resolve){
+                    request.post('/schedule/team_schedule', schedule).then(function(res) {
+                        //var schedule_ = createScheduleData(schedule);
+                        var data = res.data;
+                        //createSchedules(schedule);
+                    });
+                    resolve();
+                })
+            }
+
         })
     }
 
