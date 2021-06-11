@@ -62,7 +62,7 @@ var request = axios.create({
     }
 
     cal = new Calendar('#calendar', {
-        defaultView: 'month',
+        defaultView: 'week',
         useCreationPopup: useCreationPopup,
         useDetailPopup: useDetailPopup,
         calendars: CalendarList,
@@ -1180,7 +1180,7 @@ var request = axios.create({
                     team_schedule.end = team_end;
                     team_schedule.raw = {};
                     team_schedule.raw.class=schedule.raw['class'];
-                    team_schedule.calendarId = schedule.calendarId_origin;
+                    team_schedule.calendarId = schedule.calendarId;
                     team_schedule.uid = memberList[i].uid;
 
                     if(isNaN(team_schedule.start) || team_schedule.start === ""){
