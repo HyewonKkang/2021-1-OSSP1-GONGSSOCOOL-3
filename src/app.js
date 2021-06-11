@@ -36,7 +36,6 @@ var request = axios.create({
             var data = res.data;
             console.log(data.name);
         });
-        console.log(CalendarList);
     }
 
     function findCalendar(id) {
@@ -619,6 +618,167 @@ var request = axios.create({
         })
         
     }
+
+    function todayRelocation() {
+        var today = new Date();
+
+        var fixed_schedules = new Array(); // 고정 일정
+        var important_schedules = new Array(); // 중요도 정렬할 배열
+
+        var timetable = create2DArray(48, 1); // 하루에 대한 timetable
+        
+        function getData() {
+            return new Promise(function(resolve) {
+                request.get('/schedule').then(function(res) {
+                    var list = res.data;
+                    $.each(list, function(index, item) {
+                        var start_ = new Date(item.start);
+                        var end_ = new Date(item.end);
+                        if (today.getDate() == start_.getDate() && end_.getDate() == today.getDate()) { 
+                            if(item.raw['importance'] !== null) { // 자동 스케줄링 일정
+                                important_schedules.push(item);
+                            } else { // 고정 일정
+                                fixed_schedules.push(item);
+                            }   
+                        }
+                    });
+                    resolve(res);
+                })
+            })
+        }
+        getData().then(function() { // importance 순 오름차순 정렬
+            important_schedules.sort(function(a, b) {
+                if (a.raw['importance'] < b.raw['importance']) return 1;
+                else if (a.raw['importance'] > b.raw['importance']) return -1;
+            })
+        })
+        .then(function() {
+            for(var i=0; i<fixed_schedules.length; i++) { // 고정 업무 표시
+                var data_start = new Date(fixed_schedules[i].start);
+                var data_end = new Date(fixed_schedules[i].end);
+                if (data_start.getDate() != data_end.getDate()) continue; // all day 일정
+                
+                var data_start_month = data_start.getMonth();
+                var data_start_date = data_start.getDate();
+                var data_start_hours = data_start.getHours();
+                var data_start_minutes = data_start.getMinutes();
+                var data_end_month = data_end.getMonth();
+                var data_end_date = data_end.getDate();
+                var data_end_hours = data_end.getHours();
+                var data_end_minutes = data_end.getMinutes();
+
+                var j_start, j_end;
+                j_start = (data_start_minutes < 30) ? data_start_hours * 2 : data_start_hours * 2 + 1;
+                if (data_end_minutes === 0) j_end = data_end_hours * 2 - 1;
+                else if (data_end_minutes <= 30) j_end = data_end_hours * 2;
+                else if (data_end_minutes > 30) j_end = data_end_hours * 2 + 1;
+
+                for(var j = j_start; j <= j_end; j++) {
+                    timetable[j][0] = 1;
+                }
+            }
+
+            
+            for (var z = 0; z < important_schedules.length; z++) {
+                var schedule = createScheduleData(important_schedules[z]);
+                
+                var new_start = new Date(schedule.start);
+                var new_end = new Date(schedule.end);
+                var new_start_hours = new_start.getHours();
+                var new_start_minutes = new_start.getMinutes();
+                var new_end_hours = new_end.getHours();
+                var new_end_minutes = new_end.getMinutes();
+
+                var duration_times = Math.ceil((new_end.getTime() - new_start.getTime()) / 1000 / 60 / 60);
+
+                var cnt = 0; 
+                var times = new Array();
+                var time = duration_times * 2;
+
+                for(var j=18; j<48-time; j++){
+                    if(timetable[j][0] === 0){
+                        var flag=0;
+                        for(var k=0; k<time; k++){ // 타임블럭이 들어가지는지 확인
+                            if(timetable[j+k][0] === 0){ 
+                                flag++;
+                            }
+                        }
+                        if(flag === time){ // 들어가짐
+                            cnt++;
+                            times.push(j);
+                            for(var k=0; k<time; k++){ // 타임블럭이 들어갔으므로 1로 변환
+                                timetable[j+k][0] = 1;
+                            }
+                            break;
+                        }
+                    }
+                    if(cnt === 1){
+                        break;
+                    }
+                }
+
+                setRelocationSchedule(z);
+
+                async function setRelocationSchedule(z) {
+                    new_start_hours = parseInt(times[0] / 2);
+                    if (times[0] % 2 == 0) { new_start_minutes = 0; }
+                    else { new_start_minutes = 30; }
+
+                    new_end_hours = parseInt((times[0] + time)/2);
+                    if ((times[0] + time) % 2 == 0) { new_end_minutes = 0; }
+                    else { new_end_minutes = 30; }
+
+                    new_start.setHours(new_start_hours);
+                    new_start.setMinutes(new_start_minutes);
+                    new_end.setHours(new_end_hours);
+                    new_end.setMinutes(new_end_minutes);
+                    
+                    var push_schedule = {};
+                    push_schedule.title = schedule.title;
+                    push_schedule.isAllDay = schedule.isAllDay;
+                    push_schedule.location = schedule.location;
+                    push_schedule.category = schedule.category;
+                    push_schedule.dueDateClass = schedule.dueDateClass;
+                    push_schedule.color = schedule.color;
+                    push_schedule.bgColor = schedule.bgColor;
+                    push_schedule.dragBgColor = schedule.dragBgColor;
+                    push_schedule.borderColor = schedule.borderColor;
+                    push_schedule.start = new_start;
+                    push_schedule.end = new_end;
+                    push_schedule.raw = {};
+                    push_schedule.raw.class=schedule.raw['class'];
+                    push_schedule.calendarId = schedule.calendarId;
+                    push_schedule.id = schedule.id;
+
+                    await fetchSchedule(push_schedule);
+                }
+                            
+                function fetchSchedule(schedule) { // update
+                    return new Promise(function(resolve) {
+                        request.delete('/schedule', {
+                            data: {
+                                id: schedule.id,
+                                calendarId: schedule.calendarId
+                            }
+                        }).then(function(res) {
+                            var data = res.data;
+                            cal.deleteSchedule(data.id, data.calendarId);
+
+                            request.post('/schedule', schedule).then(function(res) {
+                                var data = res.data;
+                                var schedule_ = createScheduleData(data);
+                                createSchedules(schedule_);
+                            });
+                        });
+                    resolve();
+                    })
+                }
+            }
+            
+        })
+            
+    }
+
     function createScheduleData(scheduleData) {
         var calendar = scheduleData.calendar || findCalendar(scheduleData.calendarId);
         var duration = "", importance = "", times = "";
@@ -1044,6 +1204,7 @@ var request = axios.create({
         $('#dropdownMenu-calendars-list').on('click', onChangeNewScheduleCalendar);
         $('#btn-auto-schedule-creation').on('click', createNewSchedule);
         $('#btn-remove-notice').on('click',onClickRemoveNotice);
+        $('#btn-today-auto-scheduling').on('click', todayRelocation);
 
         window.addEventListener('resize', resizeThrottled);
     }
@@ -1109,7 +1270,6 @@ var request = axios.create({
         var list;
         request.get('/calendar').then(function(res) {
             list = res.data;
-            console.log(list);
             var calendarList = document.getElementById('calendarList');
             var html = [];
             list.forEach(function(calendar) { 
@@ -1204,7 +1364,6 @@ request.get('/loged').then(function(res) {
     var name = res.data.email.split("@");
 
     var birthday = res.data.birthday;
-    console.log(birthday);
     var bday = birthday.split('-');
     let today = new Date();
     var year = today.getFullYear(); 
