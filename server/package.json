@@ -20,7 +20,7 @@
         "express-session": "^1.17.1",
         "http": "0.0.1-security",
         "mongodb": "^3.6.6",
-        "mongoose": "^5.12.7",
+        "mongoose": "^5.13.20",
         "nedb-session-store": "^1.1.2",
         "node-uuid": "^1.4.8",
         "nodemon": "^2.0.7",
